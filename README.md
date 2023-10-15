@@ -1,7 +1,6 @@
 # Ringing for Relief: Empowering Tinnitus Sufferers
 
-
-### Description
+## Description
 
 In a world inundated with information, staying informed about health issues is crucial. For people dealing with tinnitus, a condition characterized by ringing or buzzing in the ears, access to accurate and concise information is paramount. Our project addresses this pressing need by creating a solution that empowers individuals to find answers efficiently and effectively.
 
@@ -31,10 +30,10 @@ Our project stands as a beacon of hope for those affected by tinnitus. We believ
 
 ---
 
-**Project Statement**
+## Project Statement
 
 Tinnitus, often described as a persistent ringing or buzzing in the ears, is an under-researched and frequently misunderstood condition. Many individuals are misinformed that there is "no cure," resulting in unnecessary suffering. Misdiagnoses, insufficient specialist care, and the oversimplification of tinnitus as a mere symptom of stress or anxiety contribute to this problem.
 
-
 ## 🛠️ Tech Stack
-- [React](https://reactjs.org/)    
+
+- [React](https://reactjs.org/)
