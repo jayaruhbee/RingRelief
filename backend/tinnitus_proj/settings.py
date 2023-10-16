@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'user_app',
+    'post_app'
 ]
 
 MIDDLEWARE = [
@@ -84,6 +86,20 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ring_db',
+        'USER': None,
+        'PASSWORD': None,
+        'HOST': 'localhost', 
+    },
+    'WWC': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'WWC',
+        'USER': os.environ.get('NEONUSER'),
+        'PASSWORD': os.environ.get('NEONPASSWORD'),
+        'HOST': os.environ.get('NEONHOST'),
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        }
     }
 }
 
@@ -130,5 +146,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',  
+    'http://localhost:5173',
 ]

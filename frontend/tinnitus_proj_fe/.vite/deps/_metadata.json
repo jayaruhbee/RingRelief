@@ -1,0 +1,41 @@
+{
+  "hash": "ce615505",
+  "browserHash": "575da5bb",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "d13f3103",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "6740b336",
+      "needsInterop": true
+    },
+    "@passageidentity/passage-elements/passage-auth": {
+      "src": "../../node_modules/@passageidentity/passage-elements/dist/package/passage-auth/index.es.js",
+      "file": "@passageidentity_passage-elements_passage-auth.js",
+      "fileHash": "7e4e9d82",
+      "needsInterop": false
+    },
+    "@passageidentity/passage-elements/passage-register": {
+      "src": "../../node_modules/@passageidentity/passage-elements/dist/package/passage-register/index.es.js",
+      "file": "@passageidentity_passage-elements_passage-register.js",
+      "fileHash": "9b227637",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-ENLGS5T4": {
+      "file": "chunk-ENLGS5T4.js"
+    },
+    "chunk-I37OHD4N": {
+      "file": "chunk-I37OHD4N.js"
+    },
+    "chunk-76J2PTFD": {
+      "file": "chunk-76J2PTFD.js"
+    }
+  }
+}
