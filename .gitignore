@@ -1,0 +1,4 @@
+.env 
+__pycache__
+ring_env
+node_modules/
