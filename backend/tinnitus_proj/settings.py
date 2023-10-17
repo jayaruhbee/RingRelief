@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'user_app',
-    'post_app'
+    'post_app',
+    'article_app',
 ]
 
 MIDDLEWARE = [
@@ -84,13 +85,6 @@ WSGI_APPLICATION = 'tinnitus_proj.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ring_db',
-        'USER': None,
-        'PASSWORD': None,
-        'HOST': 'localhost', 
-    },
-    'WWC': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'WWC',
         'USER': os.environ.get('NEONUSER'),

@@ -2,19 +2,40 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import User
-from .serializers import UserSerializer
+from passageidentity import Passage
+from django.http import JsonResponse
+import os
+# from .serializers import UserSerializer
+
 
 class CreateUserView(APIView):
     def post(self, request):
+        print("user debugging")
         passage_user_id = request.data.get('passage_user_id', None)
 
         if passage_user_id is not None:
-            if User.objects.filter(passage_id=passage_user_id).exists():
-                return Response({"message": "User already exists"}, status=status.HTTP_400_BAD_REQUEST)
-
             user = User(passage_id=passage_user_id)
             user.save()
-            serializer = UserSerializer(user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            print(f"User saved to the database with ID: {user.id}")
+            return JsonResponse({"result": 200})
         else:
-            return Response({"message": "Missing passage_user_id field in the request data"}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"message": "Missing passage_user_id field in the request data"}, status=400)
+
+
+
+PASSAGE_APP_ID = os.environ.get("PASSAGE_APP_ID")
+
+class AuthenticationMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        psg = Passage(PASSAGE_APP_ID)
+        
+        try:
+            user = psg.authenticateRequest(request)
+        except Exception:
+            print("no")
+        request.user = user
+        response = self.get_response(request)
+        return response
