@@ -1,41 +1,68 @@
 // import "@passageidentity/passage-elements/passage-register";
 import '@passageidentity/passage-elements/passage-auth';
-import React from "react";
+import { PassageUser } from '@passageidentity/passage-elements/passage-user';
+import React, {useState, useEffect} from "react";
 import axios from "axios";
+import './App.css';
+import userContext from "./context/userContext"
+import Routes from './Routes'
+import NavBar from './NavBar';
 
 function App() {
-  const onSuccess = (authResult) => {
-    document.cookie = "psg_auth_token=" + authResult.authToken + ";path=/";
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const magicLink = urlParams.has("psg_magic_link")
-      ? urlParams.get("psg_magic_link")
-      : null;
+  const [userInfo, setUserInfo] = useState({});
 
-    if (magicLink !== null) {
-      setTimeout(() => {
-        window.location.href = authResult.redirectURL;
-      }, 3000);
-    } else {
-      axios
-        .post("create_user/")
-        .then((response) => {
-          const newUser = response.data;
-          window.location.href = authResult.redirectURL;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+
+  useEffect(() => {
+    // Check if psg_auth_token is present in local storage
+    const psgAuthToken = localStorage.getItem("psg_auth_token");
+
+    if (psgAuthToken) {
+      const user = new PassageUser();
+      async function fetchUserInfo() {
+        try {
+          const userInfoData = await user.userInfo();
+          console.log(userInfoData, "USER INFO");
+          setUserInfo(userInfoData);
+        } catch (error) {
+          console.error("Error fetching user information:", error);
+        }
+      }
+
+      fetchUserInfo();
     }
-  };
+  }, []); // The empty dependency array ensures that this effect runs once when the component mounts
+
+
+  //  const user = new PassageUser(); 
+
+  //  if(user){
+  //   useEffect(() => {
+  //     async function fetchUserInfo() {
+  //       try {
+  //         const userInfo = await user.userInfo();
+  //         console.log(userInfo, "USER INFO");
+  //         setUserInfo(userInfo)
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     }
+  
+  //     fetchUserInfo();
+  //   }, [])
+  
+  //  }
+
 
   return (
-    <div>
-      <passage-auth
-        app-id={import.meta.env.VITE_REACT_APP_PASSAGE_APP_ID}
-        onSuccess={onSuccess}
-      ></passage-auth>
-    </div>
+    <div className='App'>
+      <userContext.Provider value ={{userInfo,setUserInfo }}>
+        <NavBar/>
+        <div style={{marginTop:"100px"}}>
+          <Routes/>
+        </div>
+      </userContext.Provider>
+      </div>
   );
 }
 
