@@ -1,0 +1,37 @@
+.article-card{
+    width: 48%;   
+    margin-bottom: 20px;
+    text-align: center;
+    background-color: lightgray;
+    border-radius: 30px;
+    padding: 5px;
+}
+
+.pub-title-year-wrapper{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+}
+.pub-title-year-wrapper p{
+    margin: 1%;
+}
+.keywords-wrapper-div {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content:center ;
+}
+.keyword{
+    background-color: aqua;
+    margin: 1%;
+    border-radius: 20px;
+    padding: 1%;
+}
+
+@media (max-width: 769px) {
+    .article-card {
+      width: 98%; 
+    }
+  }
+  
+  

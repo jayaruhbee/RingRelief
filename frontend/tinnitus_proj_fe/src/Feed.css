@@ -1,0 +1,23 @@
+.article-list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 1%;
+}
+
+.Feed{
+    text-align: center;
+    justify-content: center;
+}
+
+#loading-text{
+    color: #0d1d72;
+}
+
+#tinnitus-insights{
+    color: #0d1d72;
+}
+
+#tinnitus-insights-exp{
+    color: #0d1d72;
+}

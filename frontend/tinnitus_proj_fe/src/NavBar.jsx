@@ -35,13 +35,13 @@ const NavBar = () =>{
         <div id="homelogo" className={` ${mobileMenu ? 'open' : 'close'} `}>
             <NavLink to="/" id="logoNavLinkWrapper"><img src={logo} alt="homelogo"></img></NavLink>
         </div>
-        <div id="menudiv" className={` ${mobileMenu ? 'open' : 'close'} `}>
+        <div id="menudiv" >
 
             {
               (Object.keys(userInfo).length !== 0)? 
               <>
               <div id="hello-User">
-                Hello {userInfo.user_metadata.username}
+                <p>Hello {userInfo.user_metadata.username}</p>
               </div>
               <NavLink to="/profile" onClick={toggleMenu} > 
                 PROFILE
@@ -49,6 +49,10 @@ const NavBar = () =>{
 
             <NavLink to="/feed" onClick={toggleMenu} > 
                 FEED
+            </NavLink>
+
+            <NavLink to="/medimap" onClick={toggleMenu}>
+              MediMap
             </NavLink>
 
             <NavLink to="/signout" onClick={toggleMenu} > 

@@ -6,6 +6,7 @@ import Home from './Home'
 import Profile from "./Profile";
 import Login from "./Login";
 import SignOut from "./SignOut";
+import MediMap from "./MediMap";
 
 const Routes = () => {
    
@@ -13,7 +14,7 @@ const Routes = () => {
     return(
       <Switch>
 
-        <Route exact path="/">
+        <Route exact path="/home">
             <Home/> 
         </Route>
 
@@ -35,6 +36,10 @@ const Routes = () => {
 
         <Route exact path="/signout">
             <SignOut />
+        </Route>
+
+        <Route exact path="/medimap">
+            <MediMap />
         </Route>
 
       </Switch>
