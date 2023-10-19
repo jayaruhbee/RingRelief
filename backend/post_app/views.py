@@ -18,7 +18,7 @@ class Posts(APIView):
         serializer = PostSerializer(data=request.data)
 
         if serializer.is_valid():
-            serializer.save(user=request.user) 
+            serializer.save(author=request.user) 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     # THIS DELETES SELECTED POST

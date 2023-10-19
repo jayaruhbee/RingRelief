@@ -50,6 +50,9 @@ const NavBar = () =>{
             <NavLink to="/feed" onClick={toggleMenu} > 
                 FEED
             </NavLink>
+            <NavLink to="/forum" onClick={toggleMenu} > 
+                FORUM
+            </NavLink>
 
             <NavLink to="/medimap" onClick={toggleMenu}>
               MediMap
