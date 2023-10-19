@@ -7,7 +7,6 @@ import './App.css';
 import userContext from './context/userContext';
 // import { PassageAuth } from '@passageidentity/passage-react';
 
-
 function Registration() {
 const {userInfo, setUserInfo} = useContext(userContext)
 console.log(userInfo, "USER INFO STATE")
@@ -21,14 +20,14 @@ const ref = useRef();
               const userInfo = await user.userInfo();
               console.log(userInfo);
               setUserInfo(userInfo);
-              const formData = {
-                passage_user_id: userInfo.id,
-                email: userInfo.email,
-                username: userInfo.user_metadata.username,
-                first_name: userInfo.user_metadata.first_name,
-                last_name: userInfo.user_metadata.last_name,
-                };
-              createUser(formData);
+            //   const formData = {
+            //     passage_user_id: userInfo.id,
+            //     email: userInfo.email,
+            //     username: userInfo.user_metadata.username,
+            //     first_name: userInfo.user_metadata.first_name,
+            //     last_name: userInfo.user_metadata.last_name,
+            //     };
+            //   createUser(formData);
             } catch (error) {
               console.error(error);
             }

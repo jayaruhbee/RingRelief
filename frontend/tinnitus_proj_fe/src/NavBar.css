@@ -5,10 +5,8 @@
     top: 0; 
     width: 100%;
     z-index: 100;
-    background-color: #8870AC;
+    background-color: #0d1d72;
   }
-
-  
 
   #menudiv {
     display: flex;
@@ -18,7 +16,7 @@
     width: 100%;
     padding: 10px 20px;
     transition: right 0.3s;
-    background-color: #8870AC;
+    background-color: #0d1d72;
     z-index: 2;
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 500;
@@ -26,7 +24,7 @@
 
 
 #homelogo{
-    background-color: #8870AC;
+    background-color: #0d1d72;
     width: 7%;
     display: flex;
     align-items: center;
@@ -56,6 +54,9 @@
     transition: background-color 0.3s;
   }
   
+  p {
+    color: white;
+  }
 
   .mobile-menu {
     display: none;
@@ -134,7 +135,6 @@
   .not-active span:nth-child(3) {
     animation: ease .4s bottom-2 forwards;
   }
-
 
   
   @keyframes top {
