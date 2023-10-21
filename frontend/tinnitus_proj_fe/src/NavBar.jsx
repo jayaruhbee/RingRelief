@@ -13,13 +13,13 @@ const NavBar = () =>{
     const {userInfo} = useContext(userContext)
 
 
-    console.log(userInfo, "USER INFO STATE")
+    // console.log(userInfo, "USER INFO STATE")
 
-    if (Object.keys(userInfo).length === 0) {
-      console.log('✅ userInfo is emoty');
-    } else {
-      console.log('⛔️ userInfo is truthy');
-    }
+    // if (Object.keys(userInfo).length === 0) {
+    //   console.log('✅ userInfo is emoty');
+    // } else {
+    //   console.log('⛔️ userInfo is truthy');
+    // }
 
     const toggleMenu = () => {
         setMobileMenu(!mobileMenu);

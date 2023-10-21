@@ -10,8 +10,24 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer()  
-    comments = CommentSerializer(many=True)
+    comments = CommentSerializer(many = True, required = False)
 
     class Meta:
         model = Post
         fields = ['id', 'content', 'author', 'created_at', 'comments']
+
+# class PostSerializer(serializers.ModelSerializer):
+#     author = serializers.SerializerMethodField()
+#     comments = CommentSerializer(many = True, required = False)
+
+#     class Meta:
+#         model = Post
+#         fields = ['id', 'content', 'author', 'created_at', 'comments']
+
+#     def get_author(self, obj):
+#         user = obj.author
+#         print("user", user)
+#         return {
+#             'id': user.id,
+#             'username': user.username,
+#         }
