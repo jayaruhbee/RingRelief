@@ -22,7 +22,7 @@ function App() {
         async function fetchUserInfo() {
           try {
             const userInfoData = await user.userInfo();
-            console.log(userInfoData, "USER INFO");
+            // console.log(userInfoData, "USER INFO");
             setUserInfo(userInfoData);
             createUser(userInfoData);
         //     formData = {
@@ -54,6 +54,7 @@ function App() {
   // }
 
   function createUser(userInfoData) {
+    if(!userInfo) {
     const formData = {
       passage_user_id: userInfoData.id,
       email: userInfoData.email,
@@ -73,7 +74,7 @@ function App() {
       });
   }
 
-
+  }
   return (
     <div className='App'>
       <userContext.Provider value ={{userInfo,setUserInfo }}>

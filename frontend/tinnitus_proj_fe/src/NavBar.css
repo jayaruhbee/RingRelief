@@ -305,3 +305,8 @@
         }
       }
   }
+
+  .selected {
+    outline: 1px solid #6994c2;
+  }
+  

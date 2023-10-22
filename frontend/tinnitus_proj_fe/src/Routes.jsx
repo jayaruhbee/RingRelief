@@ -7,6 +7,7 @@ import Profile from "./Profile";
 import Login from "./Login";
 import SignOut from "./SignOut";
 import MediMap from "./MediMap";
+import Forum from "./Forum";
 
 const Routes = () => {
    
@@ -40,6 +41,9 @@ const Routes = () => {
 
         <Route exact path="/medimap">
             <MediMap />
+            </Route>
+        <Route exact path="/forum">
+            <Forum />
         </Route>
 
       </Switch>
