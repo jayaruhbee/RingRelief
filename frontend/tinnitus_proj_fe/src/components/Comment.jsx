@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { api } from "../utilities";
-import { FaUser } from "react-icons/fa";
-import DeleteButton from "./DeleteButton";
+import { FaEllipsisH } from "react-icons/fa";
+import userContext from "../context/userContext";
 
-const Comment = ({ postId, commenter }) => {
+const Comment = ({ postId}) => {
+  const { userInfo } = useContext(userContext);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
-  console.log("commenter from comment", commenter.passage_id);
-  console.log("postID", postId);
-/*TODO: FIX STATE FOR POST/COMMENTS WITHOUT RELOAD*/
+  const [editComment, setEditComment] = useState(null);
+  const [editedComment, setEditedComment] = useState("")
+  const [toggledOptions, setToggledOptions] = useState(false);
 
-// TO ACCESS ALL COMMENTS ON A POST
+  /*TODO: FIX STATE FOR POST/COMMENTS WITHOUT RELOAD*/
+
+  // ACCESS ALL COMMENTS ON POST
   useEffect(() => {
     const getComments = async () => {
       try {
@@ -25,11 +28,11 @@ const Comment = ({ postId, commenter }) => {
     getComments();
   }, [postId]);
 
-// TO CREATE A COMMENT ON A POST
+  // COMMENT ON A POST
   const handleAddComment = async (event) => {
     event.preventDefault();
-    const commenterData = commenter.passage_id;
-    // console.log("commenter data:", commenterData)
+    const commenterData = userInfo.id;
+    console.log("commenter data:", userInfo)
     const postData = {
       text: newComment,
       commenter: commenterData,
@@ -37,16 +40,15 @@ const Comment = ({ postId, commenter }) => {
 
     try {
       const response = await api.post(`post/post_comment/${postId}/`, postData);
-      // console.log("newcomment", newComment);
       // console.log("✅ Comment Created", response.data);
       setNewComment("");
     } catch (error) {
       console.error("⛔️", error);
     }
   };
-// DELETE A COMMENT ON A POST
+
+  // DELETE A COMMENT ON A POST
   const handleCommentDelete = async (commentId) => {
-    console.log("clicked");
     try {
       const response = await api.delete(`post/delete_comment/${commentId}/`);
       console.log("delete clicked, comment deleted");
@@ -54,35 +56,107 @@ const Comment = ({ postId, commenter }) => {
       console.log(error);
     }
   };
+  
+  // EDIT A COMMENT ON A POST
+  const handleCommentEdit = async (commentId) => {
+    try {
+      const response = await api.put(`post/edit_comment/${commentId}/`, { text: editedComment });
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId ? { ...comment, text: editedComment } : comment
+        )
+      );
+      setEditComment(null); 
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const toggleCommentOptions = (commentId) => {
+    if (toggledOptions === commentId) {
+      setToggledOptions(!toggledOptions);
+    } else {
+      setToggledOptions(commentId);
+    }
+  };
+
 
   return (
-    <div>
-      <ul>
-        {comments.map((comment) => (
-          <li key={comment.id}>
-            <div className="commenter-header flex flex-row ">
-              <p className="commenter-name capitalize">
-                <FaUser /> {comment.commenter.username}
-              </p>
+    <div className="hind mx-4">
+    <ul>
+      {comments.map((comment) => (
+        <li key={comment.id} className="individual-comment-container bg-slate-400 mb-2 p-4 rounded-md relative">
+          {editComment === comment.id ? (
+            <div>
+              <textarea
+                  className="w-full rounded-lg bg-gray-300 p-2"
+                  value={editedComment}
+                  onChange={(e) => setEditedComment(e.target.value)}
+                ></textarea>
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2"
+                  onClick={() => handleCommentEdit(comment.id)}
+                >
+                Save
+              </button>
             </div>
-            {comment.text}
-          </li>
-        ))}
-      </ul>
-      <form>
-        <textarea
-        className="w-full rounded-lg bg-gray-300 "
+          ) : (
+            <div className="flex flex-row items-start">
+              <div className="commenter-header flex flex-row">
+                <p className="commenter-name capitalize text-lg font-bold">
+                  {comment.commenter.username}
+                </p>
+              </div>
+              {comment.commenter.passage_id === userInfo.id && (
+                <div className="toggle-options-container absolute top-2 right-2">
+                <FaEllipsisH
+                  onClick={() => toggleCommentOptions(comment.id)}
+                  className="toggle-comment-options text-2xl cursor-pointer"
+                />
+                  {toggledOptions && (
+                    <div className="comment-options-toggle flex flex-col bg-white p-2 rounded-lg ">
+                      <button
+                        className="p-2 text-blue-600 hover:underline"
+                        onClick={() => setEditComment(comment.id)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="p-2 text-red-600 hover:underline"
+                        onClick={() => handleCommentDelete(comment.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+          <p className="text-gray-700 bg-white py-3">{comment.text}</p>
+        </li>
+      ))}
+    </ul>
+    <form className="text-right">
+      <textarea
+        className="w-full rounded-lg bg-gray-300 px-2 pt-2"
         placeholder="Share your thoughts!"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-        ></textarea>
-        <button type="submit" onClick={handleAddComment}>
-          Add Comment
-        </button>
-      </form>
-      <DeleteButton onDelete={() => handleCommentDelete(post.id)} />
-    </div>
+        value={newComment}
+        onChange={(e) => setNewComment(e.target.value)}
+      >
+      </textarea>
+      <button
+        className="text-white  bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
+        type="submit"
+        onClick={handleAddComment}
+      >
+        Add Comment
+      </button>
+    </form>
+  </div>
+  
   );
+  
 };
 
 export default Comment;

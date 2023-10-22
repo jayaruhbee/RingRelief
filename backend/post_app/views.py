@@ -41,7 +41,7 @@ class Posts(APIView):
     # THIS DELETES SELECTED POST. DONE
     def delete(self, request, post_id):
         post = get_object_or_404(Post, id = post_id)
-        print("post", post)
+        # print("post", post)
         post.delete()
         return Response("Post has been deleted", status = status.HTTP_204_NO_CONTENT)
     
@@ -71,9 +71,7 @@ class Comments(APIView):
                         status = status.HTTP_200_OK)
         
     # THIS WILL ADD A COMMENT TO SELECTED POST
-    ''' 
-    TODO:
-    '''
+ 
     def post(self, request, post_id):
         print("data", request.data)
         passage_id = request.data.get('commenter')
@@ -98,13 +96,12 @@ class Comments(APIView):
     
     def delete(self, request, comment_id):
         comment = get_object_or_404(Comment, id = comment_id)
+        # print("id", comment_id)
         comment.delete()
         return Response("Comment has been deleted", status = status.HTTP_204_NO_CONTENT)
     
     # EDIT COMMENT ON POST
-    ''' 
-    TODO:
-    '''
+
     def put(self, request, comment_id):
         comment_to_edit = get_object_or_404(Comment, id = comment_id)
         

@@ -23,7 +23,8 @@ const CreatePost = ({ author}) => {
     try {
       const response = await api.post("post/create/", postData);
       setNewPost("");
-     console.log("POST CREATED:", response)
+    //  console.log("POST CREATED:", response)
+
     } catch (error) {
       console.error("error", error);
     }
@@ -31,8 +32,8 @@ const CreatePost = ({ author}) => {
 
   return (
     <>
-      <div className="my-4 mx-2 rounded-lg bg-white border-1 border-black shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1) flex flex-col">
-        <p className="text-black text-center text-lg border-b-2 border-gray-200 py-2">
+      <div className="my-4 mx-4 rounded-md bg-white border-1 border-black shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1) flex flex-col">
+        <p className="montserrat text-gray-800 text-center text-lg border-b-2 border-gray-200 py-2">
           Create Post
         </p>
         <form className="m-5">

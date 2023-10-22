@@ -9,7 +9,6 @@ from user_app.models import User
 # Create your views here.
 # TFI SCORE: GET TFI SCORE/ POST TFI SCORE
 # FLOWCHART: GET FLOWCHART/ POST FLOWCHART
-# from django.shortcuts import render
 
 from django.http import HttpResponse, HttpRequest
 
@@ -23,7 +22,6 @@ def hello_world2(request: HttpRequest):
             print("Here", yourtfi)
             return render(request, 'insights.html', {'yourtfi': yourtfi})
 
-    # Handle other cases if 'yourtfi' is not found or request method is not POST
     return HttpResponse("Error: 'yourtfi' not found or invalid request")
 # NEXT STEP: GET NEXT STEP/ POST NEXT STEP
 class Tfi_Scores(APIView):
@@ -42,5 +40,4 @@ class Tfi_Scores(APIView):
                 return Response(PortalSerializer(new_tfi_score).data, status=status.HTTP_201_CREATED)
             else:
                 return Response("User not found", status=status.HTTP_404_NOT_FOUND)
-    # def get(self, request):
         

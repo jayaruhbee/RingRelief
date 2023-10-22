@@ -1,14 +1,10 @@
 import { api } from "../utilities";
 import { useState, useEffect } from "react";
-import { FaUser } from "react-icons/fa";
 import { FaRegCommentDots } from "react-icons/fa";
 import Comment from "./Comment";
 import DeleteButton from "./DeleteButton";
-import CreatePost from "./CreatePost";
-// import { IconName } from "react-icons/bs";
 
-
-const Post = () => {
+const Post = ({userInfo}) => {
   const [posts, setPosts] = useState([]);
   const [openComments, setOpenComments] = useState({});
 
@@ -48,11 +44,10 @@ const Post = () => {
         console.error("⛔️ error grabbing posts", error);
       }
     };
-    // if (!handlePostDelete) {
-      getPosts();
-    // }
+    getPosts();
   }, []);
 
+  // TOGGLE POST'S COMMENTS
   const toggleComments = (postId) => {
     setOpenComments((prevState) => ({
       ...prevState,
@@ -60,6 +55,7 @@ const Post = () => {
     }));
   };
 
+  // DELETE
   const handlePostDelete = async (postId) => {
     console.log("clicked");
     try {
@@ -70,45 +66,48 @@ const Post = () => {
       console.log(error);
     }
   };
-  console.log("post commenter", posts[1]);
+
   return (
     <>
       <div className="post-container">
         {posts.map((post) => (
-          <div key={post.id}>
-            <div className="individual-post hind my-4 mx-2 rounded-lg bg-white border-1 border-black shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] ">
-              <div className="post-header flex flex-row justify-between border-b">
-                <div className="user-header flex flex-row gap-2 my-4 ">
-                  {/* <FaUser className="text-3xl ml-3"/> */}
-                  <h3 className="author capitalize underline text-2xl ml-3">
+          <div key={post.id} className="my-4 mx-2">
+            <div className="individual-post hind bg-white rounded-md shadow-md p-4 m-2">
+              <div className="post-header flex flex-row justify-between pb-3">
+                <div className="user-header flex flex-row">
+                  <h3 className="author capitalize  text-2xl shadow-lg p-2">
                     {post.author.username}
                   </h3>
                 </div>
-                <div className="date-and-time pt-2 pr-2">
-                  <p className="date text-sm text-end text-black">
+                <div className="date-and-time text-end">
+                  <p className="date text-sm text-black">
                     {post.formattedDate}
                   </p>
-                  <p className="time text-sm text-end text-black">
+                  <p className="time text-sm text-black">
                     {post.formattedTime}
                   </p>
-                  {/* DELETE POSTS  */}
-                  <DeleteButton onDelete={() => handlePostDelete(post.id)} />
                 </div>
               </div>
-              <p className="post-content text-lg text-gray-800 leading-6 p-2 border-b">
-                {post.content}
-              </p>
-              <div className="flex flex-row-reverse pr-10 text-gray-800   ">
-                {/* SHOW COMMENTS/ ADD COMMENTS */}
+              <div>
+                <p className="post-content text-lg text-gray-800 border-b py-6 pl-2 bg-gray-100 rounded-md ">
+                  {post.content}
+                </p>
+                {/* DELETE POSTS */}
+                {post.author.passage_id === userInfo.id && ( 
+                  <DeleteButton onDelete={() => handlePostDelete(post.id)} />
+                  )}
+              </div>
+              <div className="show-comments text-right">
+                {/* SHOW COMMENTS/ ADD COMMENTS VIEW */}
                 <button
-                  className="text-2xl"
+                  className="text-3xl py-2 text-gray-800 hover:text-blue-500"
                   onClick={() => toggleComments(post.id)}
                 >
                   <FaRegCommentDots />
                 </button>
               </div>
               {openComments[post.id] && (
-                <Comment postId={post.id} commenter={post.author} />
+                <Comment postId={post.id} commenter={userInfo} />
               )}
             </div>
           </div>
