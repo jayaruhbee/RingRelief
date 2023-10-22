@@ -19,14 +19,22 @@
 }
 
 #slogan{
-color: #0d1d72;
-font-size: 4.2vw;
+color: #f24a6c;
+font-size: 4.3vw;
 margin-bottom: 5%;
+font-family: 'DM Serif Display', serif;
+font-weight: 400;
+
+}
+
+#h2-col-chg{
+    color: #0d1d72
 }
 
 #subslogan{
     color: #0d1d72;
-    font-size: 1.5vw;
+    font-size: 1.4vw;
+    font-family: 'Sen', sans-serif;
 }
 
 #about-wrapper-2{
@@ -53,7 +61,8 @@ margin-bottom: 5%;
 #about-2-title,
 #about-3-title{
     color: #f24a6c;
-    font-size: 1.9vw;
+    font-size: 2.6vw;
+    font-family: 'DM Serif Display', serif;
 }
 
 
@@ -63,13 +72,15 @@ margin-bottom: 5%;
 }
 
 #tinnitusimg{
-    margin-left: 10%;
-    width: 30%;
+    width: 65%;
+    margin-right: 2%;
+    margin-top: 2%;
 }
 
 #tinnitus-wrapper{
-    width: 40%;
-    margin-right: 10%;
+    width: 30%;
+    margin-left: 4%;
+    margin-right: 4%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -77,9 +88,19 @@ margin-bottom: 5%;
     text-align: center;
 }
 
-#tinnitus-title{
-    color: #0d1d72;
+#tinnitus-wrapper-2-1{
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color:#0d1d72;
+}
+
+#tinnitus-title,
+#articlefeed-title{
+    color: #f24a6c;
     font-size: 3vw;
+    font-family: 'DM Serif Display', serif;
 }
 
 #tinnitus-sub-title{
@@ -87,12 +108,37 @@ margin-bottom: 5%;
     font-size: 1.5vw;
 }
 
+
+#tinnitusimg2{
+    width: 90%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+#tinnitus-wrapper2{
+position: relative;
+}
+
+#tinnitus-title2{
+    color: #f24a6c;
+    font-size: 3vw;
+    font-family: 'DM Serif Display', serif;
+    margin-left: 5%;
+    position: absolute;
+    margin-top: 7%;
+}
+
+#tinnitus-sub-title2{
+    margin-left: 8%;
+    position: absolute;
+    margin-top: 12%;
+    width: 50%;
+
+}
 #details-wrapper-3{
-    background-color: #0d1d72; 
     display: flex;
     flex-direction: row;
 }
-
 
 #details-1{
     margin-right: 10%;
@@ -109,11 +155,36 @@ margin-bottom: 5%;
 }
 
 #articlefeed-wrapper{
-    width: 45%;
-    margin-left: 3%;
+    width: 40%;
+    margin-left: 8%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
 }
+
+#mock-up-wrapper{
+    position: relative;
+    width: 45%;
+}
+
+#articlefeedmockup {
+    width: 100%;  
+    height: 30vw;
+    z-index: 1;
+    position: relative;
+  }
+
+  #articlefeed-desc{
+    color: #0d1d72;
+  }
+  
+  #tinnitusArticleGif {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 9%;
+    margin-left: 5.3%;
+    width: 97.5%;
+  }

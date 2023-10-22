@@ -22,7 +22,7 @@ function App() {
         async function fetchUserInfo() {
           try {
             const userInfoData = await user.userInfo();
-            console.log(userInfoData, "USER INFO");
+            //console.log(userInfoData, "USER INFO");
             setUserInfo(userInfoData);
             createUser(userInfoData);
         //     formData = {
@@ -78,7 +78,7 @@ function App() {
     <div className='App'>
       <userContext.Provider value ={{userInfo,setUserInfo }}>
         <NavBar/>
-        <div style={{marginTop:"100px"}}>
+        <div style={{marginTop:"70px"}}>
           <Routes/>
         </div>
       </userContext.Provider>

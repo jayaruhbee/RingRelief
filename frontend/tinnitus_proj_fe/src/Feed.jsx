@@ -12,8 +12,14 @@ function Feed() {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [articlesPerPage, setArticlesPerPage] = useState(20);
-    const totalPages = Math.ceil(articles.length / articlesPerPage);
     const {userInfo, setUserInfo} = useContext(userContext)
+    const [filteredArticles, setFilteredArticles] = useState([]);
+    const [filteredCurrentPage, setFilteredCurrentPage] = useState(1);
+    const [isFiltered, setIsFiltered] = useState(false); 
+    const [selectedKeyWord, setSelectedKeyWord ] = useState(null)
+
+    const totalArticles = isFiltered ? filteredArticles.length : articles.length;
+    const totalPages = Math.ceil(totalArticles / articlesPerPage);
 
 
   useEffect(() => {
@@ -36,12 +42,37 @@ function Feed() {
   }, [currentPage, articlesPerPage])
 
 
+  const filterArticlesByKeyword = (keyword) => {
+    axios
+      .get(`http://127.0.0.1:8000/api/article/filter/${keyword}`)
+      .then((response) => {
+        setFilteredArticles(response.data);
+        setIsFiltered(true);
+        setFilteredCurrentPage(1);
+      })
+      .catch((error) => {
+        console.error('Error fetching filtered articles:', error);
+      });
+
+      setSelectedKeyWord(keyword)
+  };
+
   const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    window.scrollTo(0, 0);
+    if (isFiltered) {
+        setFilteredCurrentPage(filteredCurrentPage + 1);
+      } else {
+        setCurrentPage(currentPage + 1);
+      }
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage(currentPage - 1);
+    window.scrollTo(0, 0);
+    if (isFiltered) {
+        setFilteredCurrentPage(filteredCurrentPage - 1);
+      } else {
+        setCurrentPage(currentPage - 1);
+      }
   };
 
   const paginate = (data, page, perPage) => {
@@ -49,6 +80,15 @@ function Feed() {
     const end = start + perPage;
     return data.slice(start, end);
   };
+
+  const handleBackToAllArticles = () => {
+  setIsFiltered(false);
+  setSelectedKeyWord(null);
+  setFilteredArticles([]);
+  setFilteredCurrentPage(1);
+  setCurrentPage(1);
+  window.scrollTo(0, 0);
+};
   
   return (
     <div className='Feed'>
@@ -62,29 +102,68 @@ function Feed() {
         <p id="tinnitus-insights-exp">
         Get to the heart of the matter with articles, summaries, and expert insights. It's time to take control of your tinnitus journey.
         </p>
+
+        <div id="display-article-p"> {isFiltered ?
+        <>
+            <p>
+                Displaying articles based on keyword: "{selectedKeyWord}"
+            </p>
+            <p>
+            {totalArticles} articles found
+            </p>
+        </>
+            :
+            <p>
+                Displaying all articles:
+            </p>
+        }</div>
+
         <div className="article-list">
+            {paginate(isFiltered ? filteredArticles : articles, isFiltered ? filteredCurrentPage : currentPage, articlesPerPage).map((article, index) => (
+              <ArticleCard 
+              key={uuidv4()} 
+              article={article} 
+              onKeywordClick={filterArticlesByKeyword} 
+              size={index % 4 === 1 || index % 4 === 2 ? 'large' : 'small'}
+              />
+            ))}
+          </div>
+
+        {/* <div className="article-list">
             {paginate(articles, currentPage, articlesPerPage).map((article) => (
                 <>
                 <ArticleCard key={uuidv4()} article={article} />
                 </>)
             )}
-        </div>
+        </div> */}
 
+        {totalArticles > 0 ?
+        <>
         <div id="pagination-div">
-          <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+            <button onClick={handlePreviousPage} disabled={isFiltered ? filteredCurrentPage === 1 : currentPage === 1}> 
             Previous
-          </button>
-
-           <span>Page {currentPage} of {totalPages}</span>
-
-           <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-          >
+            </button>
+            <span>Page {isFiltered ? filteredCurrentPage : currentPage} of {totalPages}</span>
+            <button
+                onClick={handleNextPage}
+                disabled={isFiltered ? filteredCurrentPage === totalPages : currentPage === totalPages}
+            >
             Next
-          </button>
-          
+            </button>
         </div>
+        <button onClick={handleBackToAllArticles}>
+            Back to All Articles
+        </button>
+        </>
+        : 
+        <>
+            <button onClick={handleBackToAllArticles}>
+            Back to All Articles
+            </button>
+        </>
+        }
+
+
         </>
       }
     </div>

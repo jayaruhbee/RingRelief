@@ -1,10 +1,19 @@
+/* #0d1d72
+#f24a6c
+#1465ce
+#8faae1
+#f1a5ae */
+
 .article-card{
     width: 48%;   
     margin-bottom: 20px;
     text-align: center;
-    background-color: lightgray;
-    border-radius: 30px;
+    background-color: #8faae189;
+    border-radius: 20px;
     padding: 5px;
+}
+.article-card p{
+    color: black;
 }
 
 .pub-title-year-wrapper{
@@ -14,6 +23,8 @@
 }
 .pub-title-year-wrapper p{
     margin: 1%;
+    font-size: small;
+    margin: 0;
 }
 .keywords-wrapper-div {
     display: flex;
@@ -22,11 +33,55 @@
     justify-content:center ;
 }
 .keyword{
-    background-color: aqua;
+    background-color:#0d1d72;
     margin: 1%;
     border-radius: 20px;
     padding: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
 }
+.keyword a{
+    color: white;
+}
+
+#keywords-strong{
+    color: #f24a6c;
+}
+
+#authors-p{
+    font-size: small;
+    margin: 1%;
+}
+
+#readMore-div-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content:center ;
+}
+
+#readMore-div{
+    background-color: #f24a6c;
+    width: fit-content;
+    margin-top: 1%;
+    border-radius: 5px;
+    padding: 1%;
+}
+
+#readMore-div a{
+    color:#0d1d72;
+}
+
+.small-card {
+    width: 38%;
+    margin: 10px;
+  }
+  
+
+  .large-card {
+    width: 55%;
+    margin: 10px;
+  }
 
 @media (max-width: 769px) {
     .article-card {

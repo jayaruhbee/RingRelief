@@ -8,17 +8,18 @@
     background-color: #0d1d72;
   }
 
+  
   #menudiv {
     display: flex;
-    justify-content: flex-end;
-    align-items: center; 
+    justify-content: space-between;
+    align-items: center;
     max-width: 100%;
     width: 100%;
     padding: 10px 20px;
     transition: right 0.3s;
     background-color: #0d1d72;
     z-index: 2;
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Sen', sans-serif;
     font-weight: 500;
 }
 
@@ -39,20 +40,39 @@
     width: 60%;
 }
 
+#user-menu-div-wrapper{
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#hello-User {
+  display: inline;
+}
+
 #logoNavLinkWrapper{
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-  #menudiv a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 10px 10px 7px 10px;
-    border-radius: 30px;
-    transition: background-color 0.3s;
-  }
+#menudiv a {
+  margin-left: 20px; /* Add spacing between navigation links */
+  text-decoration: none;
+  color: #fff;
+}
+
+
+#login-reg-wrapper{
+  margin-left:auto
+}
+
+/* Style for user greeting */
+#menudiv p {
+  margin: 0;
+  font-weight: bold;
+}
   
   p {
     color: white;
@@ -251,32 +271,6 @@
     .overlay.open {
         display: block;
       }
-    
-    .switch{
-      position: absolute;
-      top:3rem;
-      right: 0.5rem;
-      width: 2.2rem;
-      height: 7rem;
-      flex-direction: column;
-    }
-
-    .switch__indicator {
-      top:0.2rem;
-      left: auto;
-
-    }
-    input#dark:checked ~ .switch__indicator {
-      transform: translate3d(0rem, 0, 0);
-    }
-    
-    input#light:checked ~ .switch__indicator {
-      transform: translate3d(0rem, 2.3rem, 0); 
-    }
-    
-    input#fun:checked ~ .switch__indicator {
-      transform: translate3d(0rem, 4.6rem, 0); 
-    }
 
       @keyframes slideDown {
         from {

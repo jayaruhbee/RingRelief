@@ -1,31 +1,59 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import './MediMap.css'
+import axios from "axios";
 
 
 const MediMap = () =>{
 
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('createFlowchart').addEventListener('click', fetchData);
-      });
-      // Define the fetchData function
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     document.getElementById('createFlowchart').addEventListener('click', fetchData);
+    //   });
+    //   // Define the fetchData function
+
+    // const openForm = () => {
+    //     window.open('https://form.jotform.com/232924255172051', 'blank', 'scrollbars=yes,toolbar=no,width=700,height=500');
+    //   };
+
+      
       async function fetchData() {
         try {
-            const userText = document.getElementById('inputText').value;
+            console.log("FETCH MEDIMAP")
+            let userText = document.getElementById('inputText').value;
+            // console.log(userText, "userText")
       
             if (!userText) {
               console.log('User input is empty.');
               return; // Exit the function
             }
       
-            const response = await fetch('http://localhost:5500/data', {
-            
-            method: 'POST',
+            const response = await fetch('http://127.0.0.1:8000/api/article/get_data/', {
+            method: 'GET',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ userText }), // Send the user input as JSON
+            // body: JSON.stringify({ userText }), // Send the user input as JSON
             });
+
+            console.log(response, "RSESS")
             const data = await response.json();
+
+
+                // const apiUrl = 'http://127.0.0.1:8000/api/article/get_data/';
+                // axios
+                // .get(apiUrl, {
+                //     headers: {
+                //     'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify({userText}),
+                // }
+                // )
+                // .then((response) => {
+                //     console.log('Data received:', response.data);
+                // })
+                // .catch((error) => {
+                //     console.error('Data received error:', error);
+                // });
+  
             const mermaidSyntax = generateFlowchart(data);
             
             const html = `
@@ -57,6 +85,9 @@ const MediMap = () =>{
             console.error(error);
         }
       }
+
+
+
       
       function generateFlowchart(data) {
         const { flow } = data;
@@ -87,15 +118,20 @@ const MediMap = () =>{
       
     return(
         <>
-        <h1>MediMap</h1>
+        <h1 id="medimapTitle" >MediMap</h1>
 
-        <p> Please share your tinnitus story. Tell us when it started, any doctors you've seen, any medications or treatments you've tried, and how it has impacted your life. Your detailed story will help us create a personalized medical history flowchart for you. </p>
+        <p id="medimapExp"> Please share your tinnitus story. Tell us when it started, any doctors you've seen, any medications or treatments you've tried, and how it has impacted your life. Your detailed story will help us create a personalized medical history flowchart for you. </p>
         <textarea
           id="inputText"
           placeholder="My tinnitus started when..."
         ></textarea>
     
-        <button id="createFlowchart">Create My MediMap</button>
+        <button id="createFlowchart" onClick={()=>fetchData()}>Create My MediMap</button>
+        
+        {/* <button onClick={openForm}>
+      Open Form
+    </button> */}
+
         </>
         
     )

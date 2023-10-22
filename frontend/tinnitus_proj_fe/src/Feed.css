@@ -1,9 +1,10 @@
 .article-list{
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-wrap:wrap;
+    justify-content: space-around;
     margin: 1%;
 }
+
 
 .Feed{
     text-align: center;
@@ -18,6 +19,32 @@
     color: #0d1d72;
 }
 
-#tinnitus-insights-exp{
+#tinnitus-insights-exp, 
+#display-article-p p{
     color: #0d1d72;
+}
+
+
+button{
+    background-color: #1465ce;
+    padding: 4px 14px;
+    margin: 3px;
+    border-radius: 10px;
+    color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #0d1d72;
+    font-family: 'Sen', sans-serif;
+}
+
+button:hover {
+    background-color: #0d1d72;
+    color: #ffffff; /* Change the text color */
+}
+
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999c4;
+  background-color: #ccccccb8;
+  color: #666666b3;
 }

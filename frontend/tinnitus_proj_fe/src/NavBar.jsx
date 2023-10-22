@@ -13,13 +13,13 @@ const NavBar = () =>{
     const {userInfo} = useContext(userContext)
 
 
-    console.log(userInfo, "USER INFO STATE")
+    //console.log(userInfo, "USER INFO STATE")
 
-    if (Object.keys(userInfo).length === 0) {
-      console.log('✅ userInfo is emoty');
-    } else {
-      console.log('⛔️ userInfo is truthy');
-    }
+    // if (Object.keys(userInfo).length === 0) {
+    //   console.log('✅ userInfo is emoty');
+    // } else {
+    //   console.log('⛔️ userInfo is truthy');
+    // }
 
     const toggleMenu = () => {
         setMobileMenu(!mobileMenu);
@@ -40,28 +40,38 @@ const NavBar = () =>{
             {
               (Object.keys(userInfo).length !== 0)? 
               <>
-              <div id="hello-User">
-                <p>Hello {userInfo.user_metadata.username}</p>
+              <div id="user-menu-div-wrapper">
+                  <NavLink to="/profile" onClick={toggleMenu} > 
+                    Profile
+                </NavLink>
+
+                <NavLink to="/feed" onClick={toggleMenu} > 
+                    Feed
+                </NavLink>
+
+                <NavLink to="/medimap" onClick={toggleMenu}>
+                  MediMap
+                </NavLink>
+
+                <NavLink to="/TFI" onClick={toggleMenu}>
+                  TFI
+                </NavLink>
               </div>
-              <NavLink to="/profile" onClick={toggleMenu} > 
-                PROFILE
-            </NavLink>
 
-            <NavLink to="/feed" onClick={toggleMenu} > 
-                FEED
-            </NavLink>
 
-            <NavLink to="/medimap" onClick={toggleMenu}>
-              MediMap
-            </NavLink>
+            <div id="hello-User">
 
-            <NavLink to="/signout" onClick={toggleMenu} > 
-                SIGNOUT
-            </NavLink>
+                <p>Hello👋 {userInfo.user_metadata.username}!</p>
+
+                <NavLink to="/signout" onClick={toggleMenu} > 
+                    Signout
+                </NavLink>
+              </div>
 
             </>
               :
               <>
+              <div id="login-reg-wrapper">
               <NavLink to="/login" onClick={toggleMenu} >
               LOGIN
              </NavLink>
@@ -69,7 +79,7 @@ const NavBar = () =>{
               <NavLink to="/register" onClick={toggleMenu} > 
                      REGISTER
              </NavLink>
-
+             </div>
             </>
             }
 
