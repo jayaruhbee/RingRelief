@@ -1,17 +1,16 @@
-import React, { useContext, useState, useEffect }  from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { PassageUser } from '@passageidentity/passage-elements/passage-user';
+import { PassageUser } from "@passageidentity/passage-elements/passage-user";
 import "./NavBar.css";
 import logo from "./images/testlogo.png";
-import userContext from './context/userContext';
+import userContext from "./context/userContext";
 
+const NavBar = () => {
+  const [mobileMenu, setMobileMenu] = useState(false);
+  const [mobileXicon, setmobileXicon] = useState(false);
+  const { userInfo } = useContext(userContext);
 
-const NavBar = () =>{
-
-    const [mobileMenu, setMobileMenu] = useState(false);
-    const [mobileXicon, setmobileXicon] = useState(false);
-    const {userInfo} = useContext(userContext)
-
+  // console.log(userInfo, "USER INFO STATE")
 
     //console.log(userInfo, "USER INFO STATE")
 
@@ -21,14 +20,14 @@ const NavBar = () =>{
     //   console.log('⛔️ userInfo is truthy');
     // }
 
-    const toggleMenu = () => {
-        setMobileMenu(!mobileMenu);
-        setmobileXicon(!mobileXicon)
-      };
+  const toggleMenu = () => {
+    setMobileMenu(!mobileMenu);
+    setmobileXicon(!mobileXicon);
+  };
 
-    const toggleMobileBtn = () =>{
-        setmobileXicon(!mobileXicon)
-    }
+  const toggleMobileBtn = () => {
+    setmobileXicon(!mobileXicon);
+  };
 
   return (
     <div id="bardiv" >
@@ -97,9 +96,7 @@ const NavBar = () =>{
         </div>
         <div className={`overlay ${mobileMenu ? 'open' : ''}`} onClick={toggleMenu}></div>
     </div>
-
   );
-}
+};
 
 export default NavBar;
-

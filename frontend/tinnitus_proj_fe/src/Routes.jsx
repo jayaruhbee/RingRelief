@@ -7,6 +7,7 @@ import Profile from "./Profile";
 import Login from "./Login";
 import SignOut from "./SignOut";
 import MediMap from "./MediMap";
+import Forum from "./Forum";
 import TFI from "./TFI";
 
 const Routes = () => {
@@ -41,6 +42,13 @@ const Routes = () => {
 
         <Route exact path="/medimap">
             <MediMap />
+            </Route>
+        <Route exact path="/forum">
+            <Forum />
+        </Route>
+
+        <Route exact path="/TFI">
+            <TFI />
         </Route>
 
         <Route exact path="/TFI">

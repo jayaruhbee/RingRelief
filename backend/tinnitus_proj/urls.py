@@ -22,6 +22,7 @@ urlpatterns = [
     path('api/user/', include("user_app.urls")),
     path('api/post/', include('post_app.urls')),
     path('api/article/', include('article_app.urls')),
+    path('api/portal/', include('portal_app.urls')),
 
 
 ]

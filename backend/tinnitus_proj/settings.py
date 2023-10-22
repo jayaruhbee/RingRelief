@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'user_app',
     'post_app',
     'article_app',
+    'portal_app',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +143,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
 ]
+
