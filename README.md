@@ -77,6 +77,7 @@ Follow these steps to run the project locally:
      source venv/bin/activate
      pip install -r requirements.txt
      pip3 install --upgrade scikit-learn
+     python3 flask_app.py
      ```
    - Your Flask framework should now be running at `http://localhost:5500/`.
 
