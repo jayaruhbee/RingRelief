@@ -68,6 +68,9 @@ Follow these steps to run the project locally:
      ```
    - Your React frontend should now be running at `http://localhost:5173/`.
 
+3. ML backend:
+   - 
+
 
 ## Tech Stack
 
@@ -82,4 +85,5 @@ Follow these steps to run the project locally:
 - ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)
 
 ## Collaborators
+
 
