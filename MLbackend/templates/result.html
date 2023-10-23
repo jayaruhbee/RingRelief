@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Health Portal</title>
+  </head>
+  <body>
+    <h1>Welcome, <span id="username">John Doe</span></h1>
+    <br>
+    <h3>Create your Medi-Map</h3>
+    <!-- Tinnitus Story -->
+    <div class="tinnitus-story">
+      <p> Please share your tinnitus story. Tell us when it started, any doctors you've seen, any medications or treatments you've tried, and how it has impacted your life. Your detailed story will help us create a personalized medical history flowchart for you. </p>
+      <textarea
+        id="inputText"
+        placeholder="My tinnitus started when..."
+      ></textarea>
+      <br>
+      <button id="createFlowchart">Create My MediMap</button>
+    </div>
+
+
+    <script src="../javascript/medimap.js"></script>
+    <br>
+    <!-- TFI Score -->
+    <div class="tfi-score">
+      <div class="tfi-score-display" id="tfi-score">
+          <!-- TFI score will be displayed here -->
+      </div>
+       
+    <a
+      href="javascript:void(
+        window.open(
+          'https://form.jotform.com/232924255172051',
+          'blank',
+          'scrollbars=yes,
+          toolbar=no,
+          width=700,
+          height=500'
+        )
+      )
+    ">
+      Discover your TFI Score
+    </a>
+    <br>
+
+    </div>
+
+    <!-- Next Step -->
+    <div class="next-step">
+    <hr>
+    <h3>Your Next Step</h3>
+      <p>{{ nextstep }}</p>
+    <h4>Based on the predicted next steps, the possible causes are:</h4>
+      <p>{{ causes }}
+    </div>
+
+  </body>
+</html>

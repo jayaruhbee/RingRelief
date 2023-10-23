@@ -1,19 +1,122 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MediMap</title>
+    <title>Health Portal</title>
   </head>
   <body>
-    <h1>MediMap</h1>
+    <h1>Welcome, <span id="username">John Doe</span></h1>
+    <br>
+    <h3>Create your Medi-Map</h3>
+    <!-- Tinnitus Story -->
+    <div class="tinnitus-story">
+      <p> Please share your tinnitus story. Tell us when it started, any doctors you've seen, any medications or treatments you've tried, and how it has impacted your life. Your detailed story will help us create a personalized medical history flowchart for you. </p>
+      <textarea
+        id="inputText"
+        placeholder="My tinnitus started when..."
+      ></textarea>
+      <br>
+      <button id="createFlowchart">Create My MediMap</button>
+    </div>
 
-    <p> Please share your tinnitus story. Tell us when it started, any doctors you've seen, any medications or treatments you've tried, and how it has impacted your life. Your detailed story will help us create a personalized medical history flowchart for you. </p>
-    <textarea
-      id="inputText"
-      placeholder="My tinnitus started when..."
-    ></textarea>
-
-    <button id="createFlowchart">Create My MediMap</button>
 
     <script src="javascript/medimap.js"></script>
+    <br>
+    <!-- TFI Score -->
+    <div class="tfi-score">
+      <div class="tfi-score-display" id="tfi-score">
+          <!-- TFI score will be displayed here -->
+      </div>
+       
+    <a
+      href="javascript:void(
+        window.open(
+          'https://form.jotform.com/232924255172051',
+          'blank',
+          'scrollbars=yes,
+          toolbar=no,
+          width=700,
+          height=500'
+        )
+      )
+    ">
+      Discover your TFI Score
+    </a>
+    <br>
+
+    </div>
+
+    <!-- Next Step -->
+    <div class="next-step">
+        <div class="next-step-display" id="next-step">
+          <!-- Next Step will be displayed here -->
+        </div> 
+      <div class="quiz">
+       <script>
+          function showFollowUpQuestion() {
+              var noRadio = document.getElementById("noRadio");
+              var followUpQuestion = document.getElementById("followUpQuestion");
+
+              if (noRadio.checked) {
+                  followUpQuestion.style.display = "block";
+              } else {
+                  followUpQuestion.style.display = "none";
+              }
+          }
+      </script>
+      <form id="dataForm" class="dataForm" action="http://localhost:5500/process_data" method="POST">
+        <h3>Caring for Your Well-Being, One Step at a Time</h3>
+
+        <label for="severity">1. What is your tinnitus severity? (Determined by TFI, THI or similar)</label>
+        <br>
+        <input type="radio" id="severity" name="severity" value="Mild"> Mild
+        <input type="radio" id="severity" name="severity" value="Moderate"> Moderate
+        <input type="radio" id="severity" name="severity" value="Severe"> Severe
+        <!-- Add more radio button options as needed -->
+
+        <hr>
+
+       <label for="checkAll1">Check all of the clinical examinations you have had.</label>
+        <br>
+        <input type="checkbox" id="checkAll1" name="otoscopy" value="otoscopy"> Otoscopy
+        <input type="checkbox" id="checkAll1" name="cranio_exam" value="cranio_exam"> Cranio-mandibular & Neck Examination
+        <input type="checkbox" id="checkAll1" name="auscultation" value="auscultation"> Auscultation
+        <br><br>
+
+        <hr>
+
+        <label for="checkAll2">Check all of the Audiological Tests you have taken.</label>
+        <br>
+        <input type="checkbox" id="checkAll2" name="checkAll2" value="tympanometry"> Tympanometry
+        <br><br>
+
+        <hr>
+
+        <label for="doYou">Do you have Pulsatile Tinnitus? (characterized by hearing rhythmic or pulsing sounds in the ears, often synchronized with the person's heartbeat or blood flow)</label>
+        <br>
+        <input type="radio" id="yesRadio" name="doYou" value="Pulsatile"> Yes
+        <input type="radio" id="noRadio" name="doYou" value="Non-Pulsatile" onchange="showFollowUpQuestion()"> No
+        <br><br>
+        <hr>
+        <div id="followUpQuestion" style="display: none;">
+            <label for="iHave">I have...</label>
+            <br>
+            <input type="checkbox" id="iHave" name="hearing_loss" value="hearing_loss"> Hearing loss
+            <input type="checkbox" id="iHave" name="vertigo" value="vertigo"> Vertigo
+            <input type="checkbox" id="iHave" name="headache" value="headache"> Headaches
+            <input type="checkbox" id="iHave" name="psychiatric" value="psychiatric"> A psychiartric disorder
+            <input type="checkbox" id="iHave" name="sensory_neural" value="sensory_neural"> Impaired Somatosensory neck/ TMJ
+            <input type="checkbox" id="iHave" name="paroxysmal" value="paroxysmal">Paroxysmal
+            <br>
+            <br>
+            <hr>
+        </div>
+        <br>
+
+        <input type="submit" name="submit" value="Submit">
+
+    </form>
+    </div>
+    </div>
+
   </body>
 </html>
