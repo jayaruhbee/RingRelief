@@ -5,6 +5,9 @@ import TinnitusDashboard from './images/TinnitusDashboard.png'
 import TinnitusDashboard2 from './images/TinnitusDashboard2.png'
 import computerMockUp from './images/computerMockUp.png'
 import tinnitusArticleGif from './images/tinnitusArticleGif.gif'
+import tinnitusForum from './images/TinnitusSupportForum.png'
+import medimap1 from './images/medimap1.png'
+import medimap2 from './images/medimap2.png'
 
 const Home = () =>{
 
@@ -82,17 +85,36 @@ const Home = () =>{
                         <p id="articlefeed-desc">With our AI-driven technology, we simplify complex research papers to provide you with summaries, keywords, and insights tailored to your concerns. Your personalized health feed keeps you up to date with the latest advancements.</p>
                     </div>
                 </div>
-
-                <div id="details-2">
-                    
-                </div>
-
-                <div id="details-3">
-                    
-                </div>
-
-
             </div>
+
+            <div id="details-wrapper-4"> 
+                <div id="details-2">
+                        <h3 id="support-forum-title">
+                        Join the Conversation - Tinnitus Support Forum
+                        </h3>
+                        <p id="support-forum-desc">
+                        Our Tinnitus Support Forum is a safe space where you can freely discuss, find support, and share your unique journey with tinnitus. Whether you're looking for insights on possible connections between headaches and tinnitus, tips to increase your sleep quality, or ways to maintain good ear health, this forum is your go-to destination.
+                        Engage with our community to explore topics like sound sensitivity, discover coping strategies that truly work. Join us in making a difference by contributing to meaningful conversations and connecting with others who understand your tinnitus experiences.       
+                        </p>
+                    <img id="tinnitusForum" src ={tinnitusForum}></img>
+                </div>
+            </div>
+
+            <div id="details-wrapper-5">
+                <img id="medimapscreenshot1" src ={medimap1}></img>
+                <img id="medimapscreenshot2" src ={medimap2}></img>
+                <div>
+                        <h3 id="medimap-title">
+                        Your Tinnitus Story Matters - Welcome to MediMap
+                        </h3>
+                        <p id="medimap-desc">
+                        Share your story with us - when it all started, the doctors you've seen, the treatments you've explored, and how tinnitus has woven its way into your life.
+                        By opening up about your experiences, you help us create a personalized medical history flowchart tailored to your path. This comprehensive tool is designed to assist you in tracking your tinnitus, provide valuable insights for your healthcare provider, and support your quest for relief. Your story is the key to unlocking your tinnitus's secrets, so let's start mapping your journey together.
+                        </p>
+                </div>
+                  
+            </div>
+
 
         </div>
         

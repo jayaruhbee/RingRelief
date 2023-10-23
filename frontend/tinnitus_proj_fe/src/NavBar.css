@@ -47,10 +47,17 @@
   margin-right: auto;
 }
 
+#hello-user-text{
+  text-align: center;
+  justify-content: center;
+}
 #hello-User {
   display: inline;
 }
 
+#profile-signout-wrapper{
+  margin-right: 4%;
+}
 #logoNavLinkWrapper{
     display: flex;
     align-items: center;
@@ -58,7 +65,8 @@
 }
 
 #menudiv a {
-  margin-left: 20px; /* Add spacing between navigation links */
+  margin-left: 10px; /* Add spacing between navigation links */
+  margin-right: 10px;
   text-decoration: none;
   color: #fff;
 }

@@ -12,19 +12,29 @@
     border-radius: 20px;
     padding: 5px;
 }
+
+#article-title{
+    font-weight: 500;
+    font-size: 2.3vw;
+    font-family: 'DM Serif Display', serif;
+}
 .article-card p{
     color: black;
 }
 
 .pub-title-year-wrapper{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-direction: row;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 .pub-title-year-wrapper p{
     margin: 1%;
     font-size: small;
     margin: 0;
+    margin-bottom: 1%;
+    margin-top: 1%;
 }
 .keywords-wrapper-div {
     display: flex;

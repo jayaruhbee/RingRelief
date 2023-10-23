@@ -12,7 +12,7 @@ function ArticleCard({ article, onKeywordClick, size }) {
 
   return (
     <div className={`article-card ${cardClass}`} >
-      <h2>{article.title}</h2>
+      <h2 id="article-title">{article.title}</h2>
       <p id="authors-p">
         <strong>Authors:</strong> {article.authors}
       </p>
@@ -36,7 +36,7 @@ function ArticleCard({ article, onKeywordClick, size }) {
                 href="#"
                 onClick={() => handleKeywordClick(keyword)}
               >
-                  {keyword.replace(/['"]+/g, '')}
+                  #{keyword.replace(/['"]+/g, '')}
               </a>
             
           </div>

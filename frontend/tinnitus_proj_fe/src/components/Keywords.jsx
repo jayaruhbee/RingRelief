@@ -26,10 +26,10 @@ const Keywords = () => {
           <div className="flex justify-end">
           </div>
           <div className="w-3/4 p-3 bg-white rounded-lg">
-            <h2 className="topics-header montserrat text-2xl font-bold mb-4 underline">Topics Covered in Research Articles</h2>
-            <ul>
+            <h2 id="topics-covered-title" className="topics-header text-2xl font-bold mb-4">Topics Covered in Research Articles:</h2>
+            <ul id="topics-list">
               {keywordSuggestions.map((topic, index) => (
-                <li key={index} className="hind inline-block p-2 bg-indigo-300 rounded-full m-1 text-lg capitalize">
+                <li id="indv-topic" key={index} className="inline-block bg-indigo-300 rounded-full m-1 text-lg capitalize">
                   {topic}
                 </li>
               ))}

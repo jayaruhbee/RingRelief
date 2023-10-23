@@ -5,7 +5,8 @@ import './App.css';
 import ArticleCard from './ArticleCard';
 import { v4 as uuidv4 } from 'uuid'; 
 import './Feed.css'
-import userContext from './context/userContext';
+import userContext from './context/themeContext';
+import { api } from "./utilities";
 
 function Feed() {
     const [articles, setArticles] = useState([]);
@@ -20,6 +21,22 @@ function Feed() {
 
     const totalArticles = isFiltered ? filteredArticles.length : articles.length;
     const totalPages = Math.ceil(totalArticles / articlesPerPage);
+
+    const [keywordSuggestions, setKeywordSuggestions] = useState([])
+
+    useEffect(() => {
+        const getKeywords = async () => {
+          try {
+            const response = await api.get("article/keyword_set");
+            // console.log("response", response.data);
+            setKeywordSuggestions(response.data);
+          } catch (error) {
+            console.error("⛔️", error);
+          }
+        };
+    
+        getKeywords();
+      }, []);
 
 
   useEffect(() => {
@@ -89,6 +106,11 @@ function Feed() {
   setCurrentPage(1);
   window.scrollTo(0, 0);
 };
+
+const handleKeywordClick = (keyword) => {
+    const cleanKeyword = keyword.replace(/['"]+/g, '');
+    filterArticlesByKeyword(cleanKeyword);
+  };
   
   return (
     <div className='Feed'>
@@ -101,12 +123,13 @@ function Feed() {
         </h3>
         <p id="tinnitus-insights-exp">
         Get to the heart of the matter with articles, summaries, and expert insights. It's time to take control of your tinnitus journey.
+        <br></br>
+        Click on any keyword to filter by that keyword.
         </p>
-
         <div id="display-article-p"> {isFiltered ?
         <>
             <p>
-                Displaying articles based on keyword: "{selectedKeyWord}"
+                Displaying articles based on keyword: "<span id="selected-kw-bold">{selectedKeyWord}</span>"
             </p>
             <p>
             {totalArticles} articles found
@@ -117,6 +140,23 @@ function Feed() {
                 Displaying all articles:
             </p>
         }</div>
+   <div id="feed-main-wrapper">
+        <div id="suggested-keywords-feed">
+            Suggested Keywords:
+        <ul id="topics-list">
+              {keywordSuggestions.map((topic, index) => (
+                <li id="indv-topic" key={index} className="inline-block bg-indigo-300 rounded-full m-1 text-lg capitalize">
+                  {/* {topic} */}
+                  <a
+                href="#"
+                onClick={() => handleKeywordClick(topic)}
+              >
+                  #{topic.replace(/['"]+/g, '')}
+              </a>
+                </li>
+              ))}
+        </ul>
+        </div>
 
         <div className="article-list">
             {paginate(isFiltered ? filteredArticles : articles, isFiltered ? filteredCurrentPage : currentPage, articlesPerPage).map((article, index) => (
@@ -136,28 +176,29 @@ function Feed() {
                 </>)
             )}
         </div> */}
-
+</div>
         {totalArticles > 0 ?
         <>
         <div id="pagination-div">
-            <button onClick={handlePreviousPage} disabled={isFiltered ? filteredCurrentPage === 1 : currentPage === 1}> 
+            <button className="button-css" onClick={handlePreviousPage} disabled={isFiltered ? filteredCurrentPage === 1 : currentPage === 1}> 
             Previous
             </button>
             <span>Page {isFiltered ? filteredCurrentPage : currentPage} of {totalPages}</span>
             <button
+                className="button-css"
                 onClick={handleNextPage}
                 disabled={isFiltered ? filteredCurrentPage === totalPages : currentPage === totalPages}
             >
             Next
             </button>
         </div>
-        <button onClick={handleBackToAllArticles}>
+        <button className="button-css" onClick={handleBackToAllArticles}>
             Back to All Articles
         </button>
         </>
         : 
         <>
-            <button onClick={handleBackToAllArticles}>
+            <button className="button-css" onClick={handleBackToAllArticles}>
             Back to All Articles
             </button>
         </>

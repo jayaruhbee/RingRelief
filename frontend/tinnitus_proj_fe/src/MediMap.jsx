@@ -5,6 +5,8 @@ import axios from "axios";
 
 const MediMap = () =>{
 
+      const [errorMessage, setErrorMessage] = useState("");
+
     // document.addEventListener('DOMContentLoaded', function() {
     //     document.getElementById('createFlowchart').addEventListener('click', fetchData);
     //   });
@@ -22,6 +24,7 @@ const MediMap = () =>{
             // console.log(userText, "userText")
       
             if (!userText) {
+                setErrorMessage("Please write something before posting.");
               console.log('User input is empty.');
               return; // Exit the function
             }
@@ -36,6 +39,7 @@ const MediMap = () =>{
 
             console.log(response, "RSESS")
             const data = await response.json();
+            setErrorMessage("");
 
 
                 // const apiUrl = 'http://127.0.0.1:8000/api/article/get_data/';
@@ -118,20 +122,28 @@ const MediMap = () =>{
       
     return(
         <>
-        <h1 id="medimapTitle" >MediMap</h1>
+        <div id="MediMap-wrapper">
+            
+            <h1 id="medimapTitle" >MediMap</h1>
 
-        <p id="medimapExp"> Please share your tinnitus story. Tell us when it started, any doctors you've seen, any medications or treatments you've tried, and how it has impacted your life. Your detailed story will help us create a personalized medical history flowchart for you. </p>
-        <textarea
-          id="inputText"
-          placeholder="My tinnitus started when..."
-        ></textarea>
-    
-        <button id="createFlowchart" onClick={()=>fetchData()}>Create My MediMap</button>
+            <p id="medimapExp"> Please share your tinnitus story. Tell us when it started, any doctors you've seen, any medications or treatments you've tried, and how it has impacted your life. Your detailed story will help us create a personalized medical history flowchart for you. </p>
+            <textarea
+            id="inputText"
+            placeholder="My tinnitus started when..."
+            ></textarea>
+
+            {errorMessage ?
+            <span id="errspanmm" className="text-red-600 text-sm">{errorMessage}</span>
+            :
+            <span id="errspanmm" className="text-sm">  </span>
+         }
         
-        {/* <button onClick={openForm}>
-      Open Form
-    </button> */}
-
+            <button className="button-css" id="createFlowchart" onClick={()=>fetchData()}>Create My MediMap</button>
+            
+            {/* <button onClick={openForm}>
+        Open Form
+        </button> */}
+        </div>
         </>
         
     )

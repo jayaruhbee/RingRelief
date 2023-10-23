@@ -11,12 +11,36 @@
     justify-content: center;
 }
 
+#feed-main-wrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+#selected-kw-bold{
+    font-weight: bold;
+    color: #f24a6c;
+}
+#suggested-keywords-feed{
+    margin-left: 2%;
+    color: #f24a6c;
+    margin-top: 2%;
+}
+
+#suggested-keywords-feed > ul{
+    align-items: start;
+    justify-content:flex-start;
+    display: grid;
+}
+
 #loading-text{
     color: #0d1d72;
 }
 
 #tinnitus-insights{
     color: #0d1d72;
+    font-weight: 500;
+    font-size:3vw;
+    font-family: 'DM Serif Display', serif;
 }
 
 #tinnitus-insights-exp, 
@@ -25,7 +49,7 @@
 }
 
 
-button{
+.button-css{
     background-color: #1465ce;
     padding: 4px 14px;
     margin: 3px;
@@ -37,7 +61,7 @@ button{
     font-family: 'Sen', sans-serif;
 }
 
-button:hover {
+.button-css:hover {
     background-color: #0d1d72;
     color: #ffffff; /* Change the text color */
 }
@@ -48,3 +72,5 @@ button[disabled]{
   background-color: #ccccccb8;
   color: #666666b3;
 }
+
+

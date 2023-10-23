@@ -51,10 +51,6 @@ const Routes = () => {
             <TFI />
         </Route>
 
-        <Route exact path="/TFI">
-            <TFI />
-        </Route>
-
       </Switch>
     )
 }

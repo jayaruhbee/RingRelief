@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { PassageUser } from "@passageidentity/passage-elements/passage-user";
 import "./NavBar.css";
 import logo from "./images/testlogo.png";
-import userContext from "./context/userContext";
+import userContext from "./context/themeContext";
 
 const NavBar = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -40,9 +40,6 @@ const NavBar = () => {
               (Object.keys(userInfo).length !== 0)? 
               <>
               <div id="user-menu-div-wrapper">
-                  <NavLink to="/profile" onClick={toggleMenu} > 
-                    Profile
-                </NavLink>
 
                 <NavLink to="/feed" onClick={toggleMenu} > 
                     Feed
@@ -55,17 +52,26 @@ const NavBar = () => {
                 <NavLink to="/TFI" onClick={toggleMenu}>
                   TFI
                 </NavLink>
+
+                <NavLink to="/forum" onClick={toggleMenu}>
+                  Forum
+                </NavLink>
               </div>
 
 
             <div id="hello-User">
 
-                <p>Hello👋 {userInfo.user_metadata.username}!</p>
+                <p id="hello-user-text"> Hello👋 {userInfo.user_metadata.username}!</p>
+            <div id="profile-signout-wrapper">
+                <NavLink to="/profile" onClick={toggleMenu} > 
+                    Profile
+                </NavLink>
 
                 <NavLink to="/signout" onClick={toggleMenu} > 
                     Signout
                 </NavLink>
-              </div>
+                </div>
+            </div>
 
             </>
               :
