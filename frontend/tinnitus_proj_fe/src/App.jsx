@@ -58,7 +58,7 @@ function App() {
   // }
 
   function createUser(userInfoData) {
-    if(!userInfo) {
+    // if(!userInfo) {
     const formData = {
       passage_user_id: userInfoData.id,
       email: userInfoData.email,
@@ -76,7 +76,7 @@ function App() {
       .catch((error) => {
         console.error('Error creating user:', error);
       });
-  }
+  // }
 
   }
   return (
