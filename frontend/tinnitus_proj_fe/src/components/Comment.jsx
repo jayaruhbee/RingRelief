@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { api } from "../utilities";
 import { FaEllipsisH } from "react-icons/fa";
-import userContext from "../context/userContext";
+import userContext from "../context/themeContext";
+import './Forum.css'
 
 const Comment = ({ postId}) => {
   const { userInfo } = useContext(userContext);
@@ -85,7 +86,7 @@ const Comment = ({ postId}) => {
     <div className="hind mx-4">
     <ul>
       {comments.map((comment) => (
-        <li key={comment.id} className="individual-comment-container bg-slate-400 mb-2 p-4 rounded-md relative">
+        <li id ="commentdisplay-wrapper" key={comment.id} className="individual-comment-container mb-2 p-4 rounded-md relative">
           {editComment === comment.id ? (
             <div>
               <textarea
@@ -104,7 +105,8 @@ const Comment = ({ postId}) => {
             <div className="flex flex-row items-start">
               <div className="commenter-header flex flex-row">
                 <p className="commenter-name capitalize text-lg font-bold">
-                  {comment.commenter.username}
+                  <i id="user-fa-icon" className="fa-solid fa-circle-user"></i>
+                  {comment.commenter.username} replied:
                 </p>
               </div>
               {comment.commenter.passage_id === userInfo.id && (
@@ -133,7 +135,7 @@ const Comment = ({ postId}) => {
               )}
             </div>
           )}
-          <p className="text-gray-700 bg-white py-3">{comment.text}</p>
+          <p id="comment-reply-text" className="text-gray-700 bg-white py-3">{comment.text}</p>
         </li>
       ))}
     </ul>
@@ -146,7 +148,8 @@ const Comment = ({ postId}) => {
       >
       </textarea>
       <button
-        className="text-white  bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
+        id="post-button-forum"
+        className="text-white rounded-lg text-sm px-5 py-2.5 text-center mb-2"
         type="submit"
         onClick={handleAddComment}
       >

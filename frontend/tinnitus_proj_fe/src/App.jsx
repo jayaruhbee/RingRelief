@@ -4,13 +4,16 @@ import { PassageUser } from '@passageidentity/passage-elements/passage-user';
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import './App.css';
-import userContext from "./context/userContext"
+import userContext from "./context/themeContext"
 import Routes from './Routes'
 import NavBar from './NavBar';
+import forumPostContext from './context/forumPostContext';
 
 function App() {
 
   const [userInfo, setUserInfo] = useState({});
+  // const [newPostCreated, setNewPostCreated] = useState(false);
+
 
 
   useEffect(() => {
@@ -22,6 +25,7 @@ function App() {
         async function fetchUserInfo() {
           try {
             const userInfoData = await user.userInfo();
+            //console.log(userInfoData, "USER INFO");
             // console.log(userInfoData, "USER INFO");
             setUserInfo(userInfoData);
             createUser(userInfoData);
@@ -77,12 +81,14 @@ function App() {
   }
   return (
     <div className='App'>
+       {/* <forumPostContext.Provider value={{ newPostCreated, setNewPostCreated }}> */}
       <userContext.Provider value ={{userInfo,setUserInfo }}>
         <NavBar/>
-        <div style={{marginTop:"100px"}}>
+        <div style={{marginTop:"70px"}}>
           <Routes/>
         </div>
       </userContext.Provider>
+      {/* </forumPostContext.Provider> */}
       </div>
   );
 }

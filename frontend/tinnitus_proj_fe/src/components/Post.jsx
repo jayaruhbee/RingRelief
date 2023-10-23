@@ -2,18 +2,23 @@ import { api } from "../utilities";
 import { useState, useEffect } from "react";
 import { FaRegCommentDots } from "react-icons/fa";
 import Comment from "./Comment";
+import CreatePost from "./CreatePost";
 import DeleteButton from "./DeleteButton";
 
-const Post = ({userInfo}) => {
+const Post = ({userInfo, isNewPostCreated, setIsNewPostCreated}) => {
   const [posts, setPosts] = useState([]);
   const [openComments, setOpenComments] = useState({});
 
+  console.log("isNewPostCreated", isNewPostCreated)
+
+
   useEffect(() => {
+    setIsNewPostCreated(false)
     const getPosts = async () => {
       try {
         const response = await api.get("post/");
         // console.log("✅ Posts", response.data);
-
+        // setNewPostCreated(true)
         const formattedPosts = response.data
           .sort((a, b) => {
             const dateA = new Date(a.created_at);
@@ -45,7 +50,19 @@ const Post = ({userInfo}) => {
       }
     };
     getPosts();
-  }, []);
+  }, [isNewPostCreated]);
+
+
+
+  // useEffect(() => {
+  //   getPosts();
+  // }, [newPostCreated]);
+
+  // useEffect(() => {
+  //   if (newPostCreated) {
+  //     getPosts();
+  //   }
+  // }, [newPostCreated]);
 
   // TOGGLE POST'S COMMENTS
   const toggleComments = (postId) => {
@@ -67,16 +84,20 @@ const Post = ({userInfo}) => {
     }
   };
 
+  
+
   return (
     <>
+      {/* <CreatePost author={userInfo} posts={posts} setPosts={setPosts} /> <span>!</span> */}
       <div className="post-container">
         {posts.map((post) => (
           <div key={post.id} className="my-4 mx-2">
             <div className="individual-post hind bg-white rounded-md shadow-md p-4 m-2">
               <div className="post-header flex flex-row justify-between pb-3">
-                <div className="user-header flex flex-row">
-                  <h3 className="author capitalize  text-2xl shadow-lg p-2">
-                    {post.author.username}
+                <div id ="user-post-display" className="user-header flex flex-row">
+                  <h3 className="author capitalize text-2xl p-2">
+                  <i id="user-fa-icon" className="fa-solid fa-circle-user"></i>
+                    {post.author.username} said:
                   </h3>
                 </div>
                 <div className="date-and-time text-end">

@@ -4,8 +4,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from django.db.models import Q
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK
+from django.db.models import Q
 from .serializers import ResearchArticleSerializer, TopicToKeywordsSerializer
 from .models import ResearchArticle, TopicToKeywords
+from django.http import JsonResponse
 
 
 class ResearchArticles(ListAPIView):
@@ -32,3 +37,18 @@ class KeywordsSet(APIView):
         keyword_set = list(set(keyword for sublist in all_keywords for keyword in sublist))
 
         return Response(keyword_set, status=HTTP_200_OK)
+
+
+def get_data(request):
+    try:
+        request_data = request.POST.get("userText")
+        print(request_data, "REQ DATAA")
+
+        jsonData = {
+            "flow": ["Started a year ago", "Gone to the ENT", "Struggle with the ringing"]
+        }
+        return JsonResponse(jsonData)
+    
+    except Exception as e:
+        return JsonResponse({"error": e})
+
