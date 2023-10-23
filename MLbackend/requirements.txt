@@ -1,0 +1,6 @@
+spacy
+spacy-lookups-data
+flask
+flask_cors
+requests
+scikit-learn
