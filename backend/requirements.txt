@@ -44,3 +44,9 @@ sqlparse==0.4.4
 typing_extensions==4.7.1
 urllib3==2.0.4
 Werkzeug==3.0.0
+spacy
+spacy-lookups-data
+flask
+flask_cors
+requests
+scikit-learn

@@ -29,7 +29,7 @@ const MediMap = () =>{
               return; // Exit the function
             }
       
-            const response = await fetch('http://127.0.0.1:8000/api/article/get_data/', {
+            const response = await fetch('http://127.0.0.1:8000/api/portal/get_data/', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

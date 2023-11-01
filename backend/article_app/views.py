@@ -39,16 +39,16 @@ class KeywordsSet(APIView):
         return Response(keyword_set, status=HTTP_200_OK)
 
 
-def get_data(request):
-    try:
-        request_data = request.POST.get("userText")
-        print(request_data, "REQ DATAA")
+# def get_data(request):
+#     try:
+#         request_data = request.POST.get("userText")
+#         print(request_data, "REQ DATAA")
 
-        jsonData = {
-            "flow": ["Started a year ago", "Gone to the ENT", "Struggle with the ringing"]
-        }
-        return JsonResponse(jsonData)
+#         jsonData = {
+#             "flow": ["Started a year ago", "Gone to the ENT", "Struggle with the ringing"]
+#         }
+#         return JsonResponse(jsonData)
     
-    except Exception as e:
-        return JsonResponse({"error": e})
+#     except Exception as e:
+#         return JsonResponse({"error": e})
 
