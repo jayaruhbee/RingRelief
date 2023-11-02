@@ -5,6 +5,10 @@ from .serializers import PortalSerializer
 from .models import Portal
 from rest_framework import status
 from user_app.models import User
+from rest_framework.generics import ListAPIView
+from rest_framework.status import HTTP_200_OK
+from django.db.models import Q
+from django.http import JsonResponse
 import spacy
 from sklearn.ensemble import RandomForestClassifier
 import pickle
