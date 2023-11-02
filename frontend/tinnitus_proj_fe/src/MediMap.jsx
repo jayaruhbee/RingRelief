@@ -30,11 +30,11 @@ const MediMap = () =>{
             }
       
             const response = await fetch('http://127.0.0.1:8000/api/portal/get_data/', {
-            method: 'GET',
+            method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            // body: JSON.stringify({ userText }), // Send the user input as JSON
+            body: JSON.stringify({ userText }), // Send the user input as JSON
             });
 
             console.log(response, "RSESS")
