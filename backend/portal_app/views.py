@@ -15,11 +15,6 @@ import re
 import json
 from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
-# TFI SCORE: GET TFI SCORE/ POST TFI SCORE
-# FLOWCHART: GET FLOWCHART/ POST FLOWCHART
-
-
 def hello_world2(request: HttpRequest):
     print("You are here")
 
@@ -31,7 +26,6 @@ def hello_world2(request: HttpRequest):
             return render(request, 'insights.html', {'yourtfi': yourtfi})
 
     return HttpResponse("Error: 'yourtfi' not found or invalid request")
-# NEXT STEP: GET NEXT STEP/ POST NEXT STEP
 
 
 class Tfi_Scores(APIView):
@@ -53,8 +47,6 @@ class Tfi_Scores(APIView):
             return Response("User not found", status=status.HTTP_404_NOT_FOUND)
 
 # Function to split text into sentences
-
-
 def split_text_into_sentences(text):
     sentences = re.split(r'[.,;!?]', text)
 
@@ -82,14 +74,13 @@ def split_text_into_sentences(text):
 
 @csrf_exempt
 def get_data(request):
-    print("Get_data POST request running")
-    # print("Get_data POST request", request)
+    # print("Get_data POST request running")
     nlp_loaded = spacy.load('portal_app/NER_model')
     try:
         request_data = json.loads(request.body)
         user_input = request_data.get("userText")
-        print(type(user_input))
-        print(user_input, "REQ DATAA")
+        # print(type(user_input))
+        # print(user_input, "REQ DATAA")
 
         dic = {
             "flow": []
@@ -115,3 +106,158 @@ def get_data(request):
 
     except Exception as e:
         return JsonResponse({"error": str(e)})
+
+
+
+
+
+def encoder(name):
+    if (name!= None):
+        return 1
+    else:
+        return 0
+
+@csrf_exempt
+def process_data(request):
+    model = joblib.load('portal_app/next_step.pkl')
+    data = json.loads(request.body)
+
+    hearing_loss = data.get('hearing_loss')
+    hearing_loss = encoder(hearing_loss)
+
+    paroxysmal = data.get('paroxysmal')
+    paroxysmal = encoder(paroxysmal)
+
+    tinnitus_type = data.get('doYou')
+
+    arterial = 0
+    venous = 1
+
+    vertigo = data.get('vertigo')
+    vertigo = encoder(vertigo)
+
+    headache = data.get('headache')
+    headache = encoder(headache)
+
+    psychiatric = data.get('psychiatric')
+    psychiatric = encoder(psychiatric)
+
+    sensory_neural = data.get('sensory_neural')
+    sensory_neural = encoder(sensory_neural)
+
+    severity = data.get('severity')
+
+    otoscopy = data.get('otoscopy')
+    otoscopy = encoder(otoscopy)
+
+    cranio_exam = data.get('cranio_exam')
+    cranio_exam = encoder(cranio_exam)
+
+    auscultation = data.get('auscultation')
+    auscultation = encoder(auscultation)
+
+    tympanometry = data.get('tympanometry')
+    tympanometry = encoder(tympanometry)
+
+    arterial = 0
+    venous = 1
+
+    features = [hearing_loss, paroxysmal, arterial, venous, vertigo, headache, psychiatric,
+    sensory_neural, otoscopy, cranio_exam]
+    
+    if tinnitus_type == 'Non-Pulsatile':
+        features.append(1)
+        features.append(0)
+    else:
+        features.append(0) 
+        features.append(1)
+
+    if severity == 'Mild':
+        features.append(0)
+        features.append(1)
+        features.append(0)
+        features.append(0)
+    elif severity == 'Moderate':
+        features.append(0)
+        features.append(0)
+        features.append(1)
+        features.append(0)
+    elif severity == 'Severe':
+        features.append(0)
+        features.append(0)
+        features.append(0)
+        features.append(1)
+
+    if auscultation == 1:
+        features.append(0)
+        features.append(1)
+    else:
+        features.append(1)
+        features.append(0)
+
+    if tympanometry == 1:
+        features.append(0)
+        features.append(1)
+    else:
+        features.append(1)
+        features.append(0)
+
+    next_steps_to_causes = {
+    'Cardiovascular examination & Echo-doppler & Angiography & Angio-MRI & Blood test': [
+        'Arteriovenous malformation',
+        'Sinus thrombosis',
+        'Aneurysm',
+        'Glomus tumor',
+        'Carotid stenosis',
+        'BIH'
+    ],
+    'Acute Treatment':['Hearing loss can be treated by many ways'
+    ],
+
+    'EEG & MRI & BAEP': [
+        'Epilepsy',
+        'MVC',
+        'Aud. nerve compression',
+        'Myoclonus'
+    ],
+    'MRI & VEMP & BAEP & Electro cochleography': [
+        'Otosclerosis',
+        'Otitis',
+        'Middle ear aplasia',
+        'Eustachian tube dysfunction'
+    ],
+    'MRI & Furosemide test & Lumbar Puncture': [
+        'BIH',
+        'Chiari',
+        'Space occupying lesion',
+        'Basilar impression'
+    ],
+    'Psych. Exam.': [
+        'Depression',
+        'Anx. disorder',
+        'Insomnia',
+        'Somatoform disorder',
+        'Suicidality'
+    ],
+    'OAE & MRI & BAEP & Blood test':['Noise Trauma', 'Chronic Hearing loss', 'Prevention'],
+    'Imaging & functional exam. for: Neck TMJ': [
+        'Disorders Neck TMJ'
+    ],
+    'Cran. + cerv. CT/MRI BAEP EEG Echo doppler Neck exam Psych. exam': [
+        'PTSD',
+        'Pertous bone fracture',
+        'Ossicular chain disruption',
+        'Posttraumatic epilepsy',
+        'Carotid dissection',
+        'Perilymphatic fistula',
+        'Otic barotrauma',
+        'Cochlear concussion'
+    ]
+    }
+    print("Final features:", features)
+    nextstep = model.predict([features])
+    causes = next_steps_to_causes[nextstep[0]]
+    result = {"nextstep": nextstep[0], "causes": causes}
+    print("result:", result)
+
+    return JsonResponse(result)

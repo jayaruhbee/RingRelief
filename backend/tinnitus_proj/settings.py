@@ -30,10 +30,19 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 # ALLOWED_HOSTS = ['*']
 
 
-# Application definition
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+]
+
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -140,9 +149,3 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-]
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:5173',
-]

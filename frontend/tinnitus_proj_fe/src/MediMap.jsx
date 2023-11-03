@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import "./MediMap.css";
 import { api } from "./utilities";
-
+// import NextStep from "./components/NextStep";
 const MediMap = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [userText, setUserText] = useState('');
+  // const [showNextStep, setShowNextStep] = useState(false);
+
 
   const handleInputChange = (event) => {
     setUserText(event.target.value);
@@ -21,14 +23,9 @@ const MediMap = () => {
   
       const response = await api.post("portal/get_data/",
         { userText },
-        // {
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // }
       );
   
-      console.log(response, "RSESS");
+      console.log(response.data, "RSESS");
       const data = response.data; 
       setErrorMessage("");
   
@@ -95,6 +92,7 @@ const MediMap = () => {
 
   return (
     <>
+
       <div id="MediMap-wrapper">
         <h1 id="medimapTitle">MediMap</h1>
 

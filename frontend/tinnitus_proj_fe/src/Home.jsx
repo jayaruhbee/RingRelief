@@ -38,7 +38,7 @@ const Home = () =>{
                     Connect:
                     </h3>
                     <p id="about-2-desc">
-                    At =========, we understand that navigating health challenges can sometimes be a lonely journey. That's why we've created a vibrant and supportive community of women who share your struggles. Here, you'll find a safe space to connect with others who truly understand what you're going through. Join discussions, make friends, and feel the strength of collective wisdom.
+                    At Health Savvy, we understand that navigating health challenges can sometimes be a lonely journey. That's why we've created a vibrant and supportive community of women who share your struggles. Here, you'll find a safe space to connect with others who truly understand what you're going through. Join discussions, make friends, and feel the strength of collective wisdom.
                     </p>
                 </div>
                 <div id="about-3">
