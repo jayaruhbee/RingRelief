@@ -94,7 +94,7 @@ function Feed() {
             },
             corpusKey: [
               {
-                customerId: '323484973',
+                customerId: '',
                 corpusId: 3,
                 semantics: 'DEFAULT',
                 dim: [],
@@ -125,7 +125,7 @@ function Feed() {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'customer-id': '323484973',
+          'customer-id': '',
           'x-api-key': 'zwt_E0f9LaKsH6mqcFbDXZ-5sboMHTKpRKbK0KzJhg',
         },
         data: JSON.stringify(requestData),
