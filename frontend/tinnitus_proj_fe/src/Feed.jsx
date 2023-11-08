@@ -94,7 +94,7 @@ function Feed() {
             },
             corpusKey: [
               {
-                customerId: '',
+                customerId: 0,
                 corpusId: 3,
                 semantics: 'DEFAULT',
                 dim: [],
@@ -126,7 +126,7 @@ function Feed() {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           'customer-id': '',
-          'x-api-key': 'zwt_E0f9LaKsH6mqcFbDXZ-5sboMHTKpRKbK0KzJhg',
+          'x-api-key': '',
         },
         data: JSON.stringify(requestData),
       };
@@ -134,10 +134,14 @@ function Feed() {
       axios(config)
         .then((response) => {
           console.log("Called");
+            // Example function to display the source in a bubble
           const summaryText = response.data.responseSet[0].summary[0].text;
-          console.log(summaryText);
-          setLLMResult(summaryText);
-          //setLLMResult(JSON.stringify(response.data));
+          const responseList = response.data.responseSet[0].response;
+          const numberPattern = /\[(\d+)\]/g;
+          const formattedText = summaryText.replace(numberPattern, (match, number) => {
+            return `${match} source{${responseList[number - 1]?.text}}`;
+          });
+          setLLMResult(formattedText);
         })
         .catch((error) => {
           console.error('Error fetching LLM result:', error);
@@ -183,6 +187,34 @@ const handleKeywordClick = (keyword) => {
     const cleanKeyword = keyword.replace(/['"]+/g, '');
     filterArticlesByKeyword(cleanKeyword);
   };
+
+  const showSource = (sourceContent) => {
+    // Create a modal element
+    const modal = document.createElement("div");
+    modal.className = "modal";
+  
+    // Create a close button
+    const closeButton = document.createElement("button");
+    closeButton.textContent = "Close";
+    closeButton.className = "close-button";
+    closeButton.addEventListener("click", () => closeModal(modal));
+  
+    // Create a content container with dangerouslySetInnerHTML
+    const contentContainer = document.createElement("div");
+    contentContainer.innerHTML = sourceContent;
+  
+    // Append close button and content to the modal
+    modal.appendChild(closeButton);
+    modal.appendChild(contentContainer);
+  
+    // Append the modal to the document body
+    document.body.appendChild(modal);
+  };  
+
+  const closeModal = (modal) => {
+    // Remove the modal from the document body
+    document.body.removeChild(modal);
+  };
   
   return (
     <div className='Feed'>
@@ -211,9 +243,28 @@ const handleKeywordClick = (keyword) => {
 
             {llmResult && (
               <div id="llm-result-container">
-                <p>{llmResult}</p>
+                {llmResult.split(/(\[\d+\] source{[^}]+})/).map((part, index) => {
+                  if (/\[\d+\] source{[^}]+}/.test(part)) {
+                    const number = part.match(/\[(\d+)\]/)[1];
+                    const sourceContent = part.match(/source{([^}]+)}/)[1];
+                    return (
+                      <button
+                        key={index}
+                        className='source'
+                        onClick={() => showSource(sourceContent)}
+                      >
+                        {number}
+                      </button>
+                    );
+                  } else {
+                    return <span key={index}>{part}</span>;
+                  }
+                })}
               </div>
             )}
+
+
+
             </p>
 
         </>

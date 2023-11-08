@@ -57,6 +57,53 @@
     margin: 10px; /* Add margin for spacing */
 }
 
+.source {
+    background-color: white; /* Background color */
+    color: #0d1d72; /* Text color */
+    cursor: pointer; /* Change cursor to a pointer on hover */
+    padding: 3px;
+    margin: 1px; /* Add margin for spacing between buttons */
+    text-decoration: none; /* Remove underlines (if any) */
+    display: inline-block; /* Display as inline-block to wrap text */
+    border-radius: 4px; /* Rounded corners */
+    text-align: center; /* Center-align text */
+    font-weight: bold; /* Make text bold */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for color changes */
+  
+    /* Add more styles as needed */
+  }
+  
+  .source:hover {
+    background-color: #f24a6c; /* Change background color on hover */
+    color: white;
+  }
+
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .close-button {
+    background-color: #ddd;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+  
+  .close-button:hover {
+    background-color: #ccc;
+  }
+  
+  
+
 .button-css{
     background-color: #1465ce;
     padding: 4px 14px;
