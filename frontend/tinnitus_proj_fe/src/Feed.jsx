@@ -18,6 +18,7 @@ function Feed() {
     const [filteredCurrentPage, setFilteredCurrentPage] = useState(1);
     const [isFiltered, setIsFiltered] = useState(false); 
     const [selectedKeyWord, setSelectedKeyWord ] = useState(null)
+    const [llmResult, setLLMResult] = useState('');
 
     const totalArticles = isFiltered ? filteredArticles.length : articles.length;
     const totalPages = Math.ceil(totalArticles / articlesPerPage);
@@ -73,6 +74,76 @@ function Feed() {
 
       setSelectedKeyWord(keyword)
   };
+  
+  useEffect(() => {
+    if (selectedKeyWord) {
+      const query = `Tell me more about ${selectedKeyWord} and how it relates to tinnitus.`;
+      const requestData = {
+        query: [
+          {
+            query: query,
+            start: 0,
+            numResults: 10,
+            contextConfig: {
+              charsBefore: 0,
+              charsAfter: 0,
+              sentencesBefore: 2,
+              sentencesAfter: 2,
+              startTag: '<b>',
+              endTag: '</b>',
+            },
+            corpusKey: [
+              {
+                customerId: '323484973',
+                corpusId: 3,
+                semantics: 'DEFAULT',
+                dim: [],
+                metadataFilter: "",
+                lexicalInterpolationConfig: {
+                  lambda: 0.025,
+                },
+              },
+            ],
+            rerankingConfig: {
+              rerankerId: 272725717,
+            },
+            summary: [
+              {
+                summarizerPromptName: 'vectara-summary-ext-v1.2.0',
+                maxSummarizedResults: 5,
+                responseLang: 'eng',
+              },
+            ],
+          },
+        ],
+      };
+
+      const config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'https://api.vectara.io/v1/query',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'customer-id': '323484973',
+          'x-api-key': 'zwt_E0f9LaKsH6mqcFbDXZ-5sboMHTKpRKbK0KzJhg',
+        },
+        data: JSON.stringify(requestData),
+      };
+
+      axios(config)
+        .then((response) => {
+          console.log("Called");
+          const summaryText = response.data.responseSet[0].summary[0].text;
+          console.log(summaryText);
+          setLLMResult(summaryText);
+          //setLLMResult(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.error('Error fetching LLM result:', error);
+        });
+    }
+  }, [selectedKeyWord]);
 
   const handleNextPage = () => {
     window.scrollTo(0, 0);
@@ -104,6 +175,7 @@ function Feed() {
   setFilteredArticles([]);
   setFilteredCurrentPage(1);
   setCurrentPage(1);
+  setLLMResult('');
   window.scrollTo(0, 0);
 };
 
@@ -134,6 +206,16 @@ const handleKeywordClick = (keyword) => {
             <p>
             {totalArticles} articles found
             </p>
+            <p>
+            <br></br>
+
+            {llmResult && (
+              <div id="llm-result-container">
+                <p>{llmResult}</p>
+              </div>
+            )}
+            </p>
+
         </>
             :
             <p>

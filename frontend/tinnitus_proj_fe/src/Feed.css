@@ -48,6 +48,14 @@
     color: #0d1d72;
 }
 
+#llm-result-container
+{
+    background-color: #8faae189; /* Set your desired background color */
+    border: 2px solid #0d1d72; /* Set your desired border color */
+    border-radius: 5px; /* Add some border radius for rounded corners */
+    padding: 10px; /* Add padding for spacing */
+    margin: 10px; /* Add margin for spacing */
+}
 
 .button-css{
     background-color: #1465ce;
