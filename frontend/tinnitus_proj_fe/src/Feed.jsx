@@ -100,7 +100,7 @@ function Feed() {
                 dim: [],
                 metadataFilter: "",
                 lexicalInterpolationConfig: {
-                  lambda: 0.025,
+                  lambda: 0.8,
                 },
               },
             ],
@@ -126,7 +126,7 @@ function Feed() {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           'customer-id': '',
-          'x-api-key': '',
+          'x-api-key': 'zwt_E0f9LaKsH6mqcFbDXZ-5sboMHTKpRKbK0KzJhg',
         },
         data: JSON.stringify(requestData),
       };
@@ -137,9 +137,20 @@ function Feed() {
             // Example function to display the source in a bubble
           const summaryText = response.data.responseSet[0].summary[0].text;
           const responseList = response.data.responseSet[0].response;
+          
+          const titleTextPairs = {};
+
+          responseList.forEach((response, index) => {
+            const titleMetadata = response.metadata.find(metadata => metadata.name === 'title');
+            const title = titleMetadata ? titleMetadata.value : null;
+        
+            titleTextPairs[index + 1] = { title, text: response.text };
+          });
+        
           const numberPattern = /\[(\d+)\]/g;
           const formattedText = summaryText.replace(numberPattern, (match, number) => {
-            return `${match} source{${responseList[number - 1]?.text}}`;
+            const pair = titleTextPairs[number];
+            return `${match} source{<b><h2>${pair.title}</h2></b><br>"${pair.text}"}`;    
           });
           setLLMResult(formattedText);
         })
@@ -202,6 +213,7 @@ const handleKeywordClick = (keyword) => {
     // Create a content container with dangerouslySetInnerHTML
     const contentContainer = document.createElement("div");
     contentContainer.innerHTML = sourceContent;
+    contentContainer.innerHTML += `<br><br><div style="font-size: small; position: absolute; bottom: 0; left: 15px;"><a href="https://link.springer.com/book/10.1007/978-1-4614-3728-4" target="_blank"><i>Springer Handbook of Auditory Research</i></a></div>`;
   
     // Append close button and content to the modal
     modal.appendChild(closeButton);
