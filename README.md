@@ -68,19 +68,6 @@ Follow these steps to run the project locally:
      ```
    - Your React frontend should now be running at `http://localhost:5173/`.
 
-3. **ML backend(using Flask)**:
-   - Open a new terminal window.
-   - Navigate to the `MLbackend` directory.
-   - Run flask micro web framework:
-     ```shell
-     python3 -m venv venv
-     source venv/bin/activate
-     pip install -r requirements.txt
-     pip3 install --upgrade scikit-learn
-     python3 flask_app.py
-     ```
-   - Your Flask framework should now be running at `http://localhost:5500/`.
-
 
 ## Tech Stack
 
