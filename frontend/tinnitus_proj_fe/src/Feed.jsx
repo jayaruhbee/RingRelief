@@ -19,8 +19,10 @@ function Feed() {
     const [isFiltered, setIsFiltered] = useState(false); 
     const [selectedKeyWord, setSelectedKeyWord ] = useState(null)
     const [llmResult, setLLMResult] = useState('');
-    const [roleSelected, setRoleSelected] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [roleSelected, setRoleSelected] = useState(null);
     const [showButtons, setShowButtons] = useState(null);
+    let [userCustomerID, setUserCustomerID] = useState('');
 
     const totalArticles = isFiltered ? filteredArticles.length : articles.length;
     const totalPages = Math.ceil(totalArticles / articlesPerPage);
@@ -79,47 +81,84 @@ function Feed() {
 
   useEffect(() => {
     if (selectedKeyWord) {
-      if (!roleSelected){
-        setShowButtons(
-          <div id="choose-represents">
-            <p>Please choose what best represents you. I am... </p>
-
-            <button className='representsBtn' onClick={() => handleRoleSelection('researcher', selectedKeyWord)}>Researching</button>
-
-            <button className='representsBtn' onClick={() => handleRoleSelection('personWithTinnitus', selectedKeyWord)}>Coping with Tinnitus</button>
-
-            <button className='representsBtn' onClick={() => handleRoleSelection('explorer', selectedKeyWord)}>Just Exploring</button>
-          </div>
-        );
+      if (roleSelected == null){
+        handleShowButtons();
       } else { 
+          if (userCustomerID == ''){
+            const enteredCustomerID = prompt("Please enter your Vectara ID:");
+            if (enteredCustomerID) {
+              setUserCustomerID(enteredCustomerID);
+              userCustomerID = enteredCustomerID;
+            } else {
+              setIsLoading(false);
+            }
+          }
+          let newQuery = ``;
+          let newKey = "zwt_E0f9LaKsH6mqcFbDXZ-5sboMHTKpRKbK0KzJhg";
+          let newSemantics = 'DEFAULT';
+          let newLambda = 0.025;
+          let newNumResults = 10;
+          let newDiversityBias = 0.0;
+          let newSentencesBefore = 1;
+          let newSentencesAfter = 1;
+          let newCorpusId = 3;
+        
+          // Adjust values based on the selected role
+          if (roleSelected === 'researcher') {
+            newLambda = 0.5;
+            newSemantics = 'RESPONSE';
+            newSentencesBefore = 3;
+            newSentencesAfter = 3;
+            newQuery = `Researcher-specific content about ${selectedKeyWord} and tinnitus.`;
+          }
+          if (roleSelected === 'personWithTinnitus') {
+            newNumResults = 30;
+            newLambda = 0.3;
+            newSemantics = 'DEFAULT';
+            newKey = "zqt_E0f9LZVvQd_dQ58GxmDRE-eVqR-kVSqwsz0zdA";
+            newDiversityBias = 0.2;
+            newCorpusId = 2;
+            newQuery = `How can my tinnitus be related to ${selectedKeyWord} and how to cope specifically with these?`;
+          }
+          if (roleSelected === 'explorer') {
+            newNumResults = 15;
+            newLambda = 0.01;
+            newSemantics = 'DEFAULT';
+            newDiversityBias = 0.4;
+            newQuery = `What is ${selectedKeyWord} in relation to tinnitus?`;
+          }
+
           const requestData = {
             query: [
               {
-                query: `How is ${selectedKeyWord} related to Tinnitus?`,
+                query: newQuery,
                 start: 0,
-                numResults: 10,
+                numResults: newNumResults,
                 contextConfig: {
                   charsBefore: 0,
                   charsAfter: 0,
-                  sentencesBefore: 2,
-                  sentencesAfter: 2,
+                  sentencesBefore: newSentencesBefore,
+                  sentencesAfter: newSentencesAfter,
                   startTag: '<b>',
                   endTag: '</b>',
                 },
                 corpusKey: [
                   {
                     customerId: 0,
-                    corpusId: 3,
-                    semantics: 'DEFAULT',
+                    corpusId: newCorpusId,
+                    semantics: newSemantics,
                     dim: [],
                     metadataFilter: "",
                     lexicalInterpolationConfig: {
-                      lambda: 0.025,
+                      lambda: newLambda,
                     },
                   },
                 ],
                 rerankingConfig: {
                   rerankerId: 272725717,
+                  mmrConfig: {
+                    diversityBias: newDiversityBias
+                  }
                 },
                 summary: [
                   {
@@ -139,14 +178,15 @@ function Feed() {
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
-              'customer-id': '323484973',
-              'x-api-key': 'zwt_E0f9LaKsH6mqcFbDXZ-5sboMHTKpRKbK0KzJhg',
+              'customer-id': userCustomerID,
+              'x-api-key': newKey,
             },
             data: JSON.stringify(requestData),
           };
-
+          setIsLoading(true);
           axios(config)
             .then((response) => {
+              setIsLoading(false);
               console.log("Called");
                 // Example function to display the source in a bubble
               const summaryText = response.data.responseSet[0].summary[0].text;
@@ -169,6 +209,7 @@ function Feed() {
               setLLMResult(formattedText);
             })
             .catch((error) => {
+              setIsLoading(false);
               console.error('Error fetching LLM result:', error);
           });
         }
@@ -206,7 +247,7 @@ function Feed() {
   setFilteredCurrentPage(1);
   setCurrentPage(1);
   setLLMResult('');
-  setRoleSelected(false);
+  setRoleSelected(null);
   window.scrollTo(0, 0);
 };
 
@@ -224,13 +265,16 @@ const handleKeywordClick = (keyword) => {
     const closeButton = document.createElement("button");
     closeButton.textContent = "Close";
     closeButton.className = "close-button";
+    closeButton.style.zIndex = "999";
     closeButton.addEventListener("click", () => closeModal(modal));
   
     // Create a content container with dangerouslySetInnerHTML
     const contentContainer = document.createElement("div");
     contentContainer.innerHTML = sourceContent;
-    contentContainer.innerHTML += `<br><br><div style="font-size: small; position: absolute; bottom: 0; left: 15px;"><a href="https://link.springer.com/book/10.1007/978-1-4614-3728-4" target="_blank"><i>Springer Handbook of Auditory Research</i></a></div>`;
-  
+    contentContainer.innerHTML += `<br></br><div style="font-size: small; position: relative; left: 15px;"><a href="https://link.springer.com/book/10.1007/978-1-4614-3728-4" target="_blank"><i>Springer Handbook of Auditory Research</i></a></div>`;
+    if (roleSelected == 'personWithTinnitus'){
+      contentContainer.innerHTML += `<div style="font-size: small; position: relative; left: 15px;"><a href="https://pueblo.gpo.gov/DOD/pdfs/HCE-837.pdf" target="_blank"><i>How to Manage Your Tinnitus: A Step-by-Step Workbook</i></a></div>`;
+    }
     // Append close button and content to the modal
     modal.appendChild(closeButton);
     modal.appendChild(contentContainer);
@@ -244,28 +288,25 @@ const handleKeywordClick = (keyword) => {
     document.body.removeChild(modal);
   };
 
-  const handleRoleSelection = (selectedRole, selectedKeyWord) => {
-    setRoleSelected(true);
+  const handleRoleSelection = (selectedRole) => {
+    setRoleSelected(selectedRole);
     setShowButtons(null);
-
-    let newQuery = `Tell me more about ${selectedKeyWord} and how it relates to tinnitus.`;
-    let newCorpusId = 3;
-    let newSemantics = 'DEFAULT';
-    let newLambda = 0.025;
-    let numResults = 10;
-  
-    // Adjust values based on the selected role
-    if (selectedRole === 'researcher') {
-      newLambda = 0.8;
-    }
-    if (selectedRole === 'personWithTinnitus') {
-      numResults = 20;
-      newLambda = 0;
-    }
-    if (selectedRole === 'explorer') {
-      numResults = 15;
-    }
   }
+
+  const handleShowButtons = () => {
+    setShowButtons(
+      <div id="choose-represents">
+        <p>Please choose what best represents you. I am... </p>
+
+        <button className='representsBtn' onClick={() => handleRoleSelection('researcher')}>Researching</button>
+
+        <button className='representsBtn' onClick={() => handleRoleSelection('personWithTinnitus')}>Coping with Tinnitus</button>
+
+        <button className='representsBtn' onClick={() => handleRoleSelection('explorer')}>Just Exploring</button>
+      </div>
+    );
+  };
+
   return (
     <div className='Feed'>
        {loading ? (
@@ -291,33 +332,37 @@ const handleKeywordClick = (keyword) => {
             <p id="llm-display-p">
             <br></br>
             {showButtons}
-            {llmResult ? (
-              <div id="llm-result-container">
-                {llmResult.split(/(\[\d+\] source{[^}]+})/).map((part, index) => {
-                  if (/\[\d+\] source{[^}]+}/.test(part)) {
-                    const number = part.match(/\[(\d+)\]/)[1];
-                    const sourceContent = part.match(/source{([^}]+)}/)[1];
-                    return (
-                      <button
-                        key={index}
-                        className='source'
-                        onClick={() => showSource(sourceContent)}
-                      >
-                        {number}
-                      </button>
-                    );
-                  } else {
-                    return <span key={index}>{part}</span>;
-                  }
-                })}
-              </div>
-            )
-          :
-          roleSelected ? <div class="loader"></div> : ""
-          }
-
-
-
+            {isLoading ? (
+              <div class="loader"></div>
+            ) : (
+              <>
+                {llmResult ? (
+                  <div id="llm-result-container">
+                    {llmResult.split(/(\[\d+\] source{[^}]+})/).map((part, index) => {
+                      if (/\[\d+\] source{[^}]+}/.test(part)) {
+                        const number = part.match(/\[(\d+)\]/)[1];
+                        const sourceContent = part.match(/source{([^}]+)}/)[1];
+                        return (
+                          <button
+                            key={index}
+                            className='source'
+                            onClick={() => showSource(sourceContent)}
+                          >
+                            {number}
+                          </button>
+                        );
+                      } else {
+                        return <span key={index}>{part}</span>;
+                      }
+                    })}
+                    <br></br>
+                    <button className='change-role-button' onClick={handleShowButtons}>👤 Change Role</button>
+                  </div>
+                ) : (
+                  roleSelected ? <div class="loader"></div> : ""
+                )}
+              </>
+            )}
             </p>
 
         </>

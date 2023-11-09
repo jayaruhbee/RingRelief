@@ -50,6 +50,11 @@
     padding-left: 2%;
     padding-right: 2%;
 }
+
+.keyword:hover{
+    background-color:#f24a6c;
+}
+
 .keyword a{
     color: white;
 }
