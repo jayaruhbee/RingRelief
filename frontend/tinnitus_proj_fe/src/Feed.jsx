@@ -19,6 +19,8 @@ function Feed() {
     const [isFiltered, setIsFiltered] = useState(false); 
     const [selectedKeyWord, setSelectedKeyWord ] = useState(null)
     const [llmResult, setLLMResult] = useState('');
+    const [roleSelected, setRoleSelected] = useState(false);
+    const [showButtons, setShowButtons] = useState(null);
 
     const totalArticles = isFiltered ? filteredArticles.length : articles.length;
     const totalPages = Math.ceil(totalArticles / articlesPerPage);
@@ -74,91 +76,104 @@ function Feed() {
 
       setSelectedKeyWord(keyword)
   };
-  
+
   useEffect(() => {
     if (selectedKeyWord) {
-      const query = `Tell me more about ${selectedKeyWord} and how it relates to tinnitus.`;
-      const requestData = {
-        query: [
-          {
-            query: query,
-            start: 0,
-            numResults: 10,
-            contextConfig: {
-              charsBefore: 0,
-              charsAfter: 0,
-              sentencesBefore: 2,
-              sentencesAfter: 2,
-              startTag: '<b>',
-              endTag: '</b>',
-            },
-            corpusKey: [
+      if (!roleSelected){
+        setShowButtons(
+          <div>
+            <p>Please choose what best represents you. I am... </p>
+
+            <button onClick={() => handleRoleSelection('researcher', selectedKeyWord)}>Researching</button>
+
+            <button onClick={() => handleRoleSelection('personWithTinnitus', selectedKeyWord)}>Coping with Tinnitus</button>
+
+            <button onClick={() => handleRoleSelection('explorer', selectedKeyWord)}>Just Exploring</button>
+          </div>
+        );
+      } else { 
+          const requestData = {
+            query: [
               {
-                customerId: 0,
-                corpusId: 3,
-                semantics: 'DEFAULT',
-                dim: [],
-                metadataFilter: "",
-                lexicalInterpolationConfig: {
-                  lambda: 0.8,
+                query: `How is ${selectedKeyWord} related to Tinnitus?`,
+                start: 0,
+                numResults: 10,
+                contextConfig: {
+                  charsBefore: 0,
+                  charsAfter: 0,
+                  sentencesBefore: 2,
+                  sentencesAfter: 2,
+                  startTag: '<b>',
+                  endTag: '</b>',
                 },
-              },
-            ],
-            rerankingConfig: {
-              rerankerId: 272725717,
+                corpusKey: [
+                  {
+                    customerId: 0,
+                    corpusId: 3,
+                    semantics: 'DEFAULT',
+                    dim: [],
+                    metadataFilter: "",
+                    lexicalInterpolationConfig: {
+                      lambda: 0.025,
+                    },
+                  },
+                ],
+                rerankingConfig: {
+                  rerankerId: 272725717,
+                },
+                summary: [
+                  {
+                    summarizerPromptName: 'vectara-summary-ext-v1.2.0',
+                    maxSummarizedResults: 5,
+                    responseLang: 'eng',
+                    },
+                  ],
+                },
+              ],
+          };
+
+          const config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'https://api.vectara.io/v1/query',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'customer-id': '323484973',
+              'x-api-key': 'zwt_E0f9LaKsH6mqcFbDXZ-5sboMHTKpRKbK0KzJhg',
             },
-            summary: [
-              {
-                summarizerPromptName: 'vectara-summary-ext-v1.2.0',
-                maxSummarizedResults: 5,
-                responseLang: 'eng',
-              },
-            ],
-          },
-        ],
-      };
+            data: JSON.stringify(requestData),
+          };
 
-      const config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: 'https://api.vectara.io/v1/query',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'customer-id': '',
-          'x-api-key': 'zwt_E0f9LaKsH6mqcFbDXZ-5sboMHTKpRKbK0KzJhg',
-        },
-        data: JSON.stringify(requestData),
-      };
+          axios(config)
+            .then((response) => {
+              console.log("Called");
+                // Example function to display the source in a bubble
+              const summaryText = response.data.responseSet[0].summary[0].text;
+              const responseList = response.data.responseSet[0].response;
+              
+              const titleTextPairs = {};
 
-      axios(config)
-        .then((response) => {
-          console.log("Called");
-            // Example function to display the source in a bubble
-          const summaryText = response.data.responseSet[0].summary[0].text;
-          const responseList = response.data.responseSet[0].response;
-          
-          const titleTextPairs = {};
-
-          responseList.forEach((response, index) => {
-            const titleMetadata = response.metadata.find(metadata => metadata.name === 'title');
-            const title = titleMetadata ? titleMetadata.value : null;
-        
-            titleTextPairs[index + 1] = { title, text: response.text };
+              responseList.forEach((response, index) => {
+                const titleMetadata = response.metadata.find(metadata => metadata.name === 'title');
+                const title = titleMetadata ? titleMetadata.value : null;
+            
+                titleTextPairs[index + 1] = { title, text: response.text };
+              });
+            
+              const numberPattern = /\[(\d+)\]/g;
+              const formattedText = summaryText.replace(numberPattern, (match, number) => {
+                const pair = titleTextPairs[number];
+                return `${match} source{<b><h2>${pair.title}</h2></b><br>"${pair.text}"}`;    
+              });
+              setLLMResult(formattedText);
+            })
+            .catch((error) => {
+              console.error('Error fetching LLM result:', error);
           });
-        
-          const numberPattern = /\[(\d+)\]/g;
-          const formattedText = summaryText.replace(numberPattern, (match, number) => {
-            const pair = titleTextPairs[number];
-            return `${match} source{<b><h2>${pair.title}</h2></b><br>"${pair.text}"}`;    
-          });
-          setLLMResult(formattedText);
-        })
-        .catch((error) => {
-          console.error('Error fetching LLM result:', error);
-        });
-    }
-  }, [selectedKeyWord]);
+        }
+      }
+    }, [selectedKeyWord, roleSelected]);
 
   const handleNextPage = () => {
     window.scrollTo(0, 0);
@@ -191,6 +206,7 @@ function Feed() {
   setFilteredCurrentPage(1);
   setCurrentPage(1);
   setLLMResult('');
+  setRoleSelected(false);
   window.scrollTo(0, 0);
 };
 
@@ -227,7 +243,29 @@ const handleKeywordClick = (keyword) => {
     // Remove the modal from the document body
     document.body.removeChild(modal);
   };
+
+  const handleRoleSelection = (selectedRole, selectedKeyWord) => {
+    setRoleSelected(true);
+    setShowButtons(null);
+
+    let newQuery = `Tell me more about ${selectedKeyWord} and how it relates to tinnitus.`;
+    let newCorpusId = 3;
+    let newSemantics = 'DEFAULT';
+    let newLambda = 0.025;
+    let numResults = 10;
   
+    // Adjust values based on the selected role
+    if (selectedRole === 'researcher') {
+      newLambda = 0.8;
+    }
+    if (selectedRole === 'personWithTinnitus') {
+      numResults = 20;
+      newLambda = 0;
+    }
+    if (selectedRole === 'explorer') {
+      numResults = 15;
+    }
+  }
   return (
     <div className='Feed'>
        {loading ? (
@@ -252,7 +290,7 @@ const handleKeywordClick = (keyword) => {
             </p>
             <p>
             <br></br>
-
+            {showButtons}
             {llmResult && (
               <div id="llm-result-container">
                 {llmResult.split(/(\[\d+\] source{[^}]+})/).map((part, index) => {

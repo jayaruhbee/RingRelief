@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import NextStep from "./components/NextStep";
-import "./TFI.css";
+// import NextStep from "./components/NextStep";
+// import "./TFI.css";
 
 const TFI = () => {
   const [showNextStep, setShowNextStep] = useState(false);
