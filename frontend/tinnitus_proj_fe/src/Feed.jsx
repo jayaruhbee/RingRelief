@@ -81,14 +81,14 @@ function Feed() {
     if (selectedKeyWord) {
       if (!roleSelected){
         setShowButtons(
-          <div>
+          <div id="choose-represents">
             <p>Please choose what best represents you. I am... </p>
 
-            <button onClick={() => handleRoleSelection('researcher', selectedKeyWord)}>Researching</button>
+            <button className='representsBtn' onClick={() => handleRoleSelection('researcher', selectedKeyWord)}>Researching</button>
 
-            <button onClick={() => handleRoleSelection('personWithTinnitus', selectedKeyWord)}>Coping with Tinnitus</button>
+            <button className='representsBtn' onClick={() => handleRoleSelection('personWithTinnitus', selectedKeyWord)}>Coping with Tinnitus</button>
 
-            <button onClick={() => handleRoleSelection('explorer', selectedKeyWord)}>Just Exploring</button>
+            <button className='representsBtn' onClick={() => handleRoleSelection('explorer', selectedKeyWord)}>Just Exploring</button>
           </div>
         );
       } else { 
@@ -288,10 +288,10 @@ const handleKeywordClick = (keyword) => {
             <p>
             {totalArticles} articles found
             </p>
-            <p>
+            <p id="llm-display-p">
             <br></br>
             {showButtons}
-            {llmResult && (
+            {llmResult ? (
               <div id="llm-result-container">
                 {llmResult.split(/(\[\d+\] source{[^}]+})/).map((part, index) => {
                   if (/\[\d+\] source{[^}]+}/.test(part)) {
@@ -311,7 +311,10 @@ const handleKeywordClick = (keyword) => {
                   }
                 })}
               </div>
-            )}
+            )
+          :
+          roleSelected ? <div class="loader"></div> : ""
+          }
 
 
 
