@@ -63,38 +63,41 @@ const MediMap = () => {
     }
   }
 
-  function generateFlowchart(data) {
-    const { flow } = data;
 
-    if (!flow || !Array.isArray(flow)) {
-      return ""; // Handle invalid data
-    }
 
-    // Initialize the Mermaid syntax
-    let mermaidSyntax = "graph TD;\n";
-
-    for (let i = 0; i < flow.length; i++) {
-      const stepText = flow[i];
-      const nodeName = `step${i}`;
-
-      mermaidSyntax += `${nodeName}["${stepText}"]`;
-
-      if (i < flow.length - 1) {
-        const nextNodeName = `step${i + 1}`;
-        mermaidSyntax += ` --> ${nextNodeName}`;
+      
+      function generateFlowchart(data) {
+        const { flow } = data;
+      
+        if (!flow || !Array.isArray(flow)) {
+          return ''; // Handle invalid data
+        }
+      
+        // Initialize the Mermaid syntax
+        let mermaidSyntax = 'graph TD;\n';
+      
+        for (let i = 0; i < flow.length; i++) {
+          const stepText = flow[i];
+          const nodeName = `step${i}`;
+      
+          mermaidSyntax += `${nodeName}["${stepText}"]`;
+      
+          if (i < flow.length - 1) {
+            const nextNodeName = `step${i + 1}`;
+            mermaidSyntax += ` --> ${nextNodeName}`;
+          }
+      
+          mermaidSyntax += ';\n';
+        }
+      
+        return mermaidSyntax;
       }
-
-      mermaidSyntax += ";\n";
-    }
-
-    return mermaidSyntax;
-  }
-
-  return (
-    <>
-
-      <div id="MediMap-wrapper">
-        <h1 id="medimapTitle">MediMap</h1>
+      
+    return(
+        <>
+        <div id="MediMap-wrapper">
+            
+            <h1 id="medimapTitle" >MediMap</h1>
 
         <p id="medimapExp">
           {" "}
